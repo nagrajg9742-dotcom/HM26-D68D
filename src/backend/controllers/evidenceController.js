@@ -12,19 +12,45 @@ const uploadEvidence = async (req, res) => {
       });
     }
 
+    const complaintResult = await pool.query(
+      "SELECT citizen_id FROM complaints WHERE id = $1",
+      [complaintId]
+    );
+
+    if (complaintResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Complaint not found"
+      });
+    }
+
+    const complaint = complaintResult.rows[0];
+
+    if (
+      req.user.role === "citizen" &&
+      complaint.citizen_id !== uploadedBy
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to upload evidence for this complaint"
+      });
+    }
+
     const fileName = req.file.originalname;
     const fileUrl = `/uploads/evidence/${req.file.filename}`;
+    const fileType = req.file.mimetype;
 
     const result = await pool.query(
       `INSERT INTO evidence
-       (complaint_id, uploaded_by, file_name, file_url)
-       VALUES ($1, $2, $3, $4)
+       (complaint_id, uploaded_by, file_name, file_url, file_type)
+       VALUES ($1, $2, $3, $4, $5)
        RETURNING *`,
       [
         complaintId,
         uploadedBy,
         fileName,
-        fileUrl
+        fileUrl,
+        fileType
       ]
     );
 
@@ -46,6 +72,30 @@ const uploadEvidence = async (req, res) => {
 const getEvidence = async (req, res) => {
   try {
     const complaintId = req.params.id;
+
+    const complaintResult = await pool.query(
+      "SELECT citizen_id FROM complaints WHERE id = $1",
+      [complaintId]
+    );
+
+    if (complaintResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Complaint not found"
+      });
+    }
+
+    const complaint = complaintResult.rows[0];
+
+    if (
+      req.user.role === "citizen" &&
+      complaint.citizen_id !== req.user.id
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to view evidence for this complaint"
+      });
+    }
 
     const result = await pool.query(
       `SELECT
