@@ -13,6 +13,13 @@ const evidenceRoutes = require("./routes/evidenceRoutes");
 const statusHistoryRoutes = require("./routes/statusHistoryRoutes");
 const rescueRoutes = require("./routes/rescueRoutes");
 const verificationRoutes = require("./routes/verificationRoutes");
+const assignmentRoutes = require("./routes/assignmentRoutes");
+const priorityRoutes = require("./routes/priorityRoutes");
+const slaRoutes = require("./routes/slaRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const departmentRoutes = require("./routes/departmentRoutes");
+const auditRoutes = require("./routes/auditRoutes");
+const intelligenceRoutes = require("./routes/intelligenceRoutes");
 
 const app = express();
 
@@ -50,9 +57,23 @@ app.use("/api/evidence", evidenceRoutes);
 app.use("/api/complaints", statusHistoryRoutes);
 app.use("/api/complaints", rescueRoutes);
 app.use("/api/complaints", verificationRoutes);
+app.use("/api/complaints", assignmentRoutes);
+app.use("/api/priority", priorityRoutes);
+app.use("/api/sla", slaRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/departments", departmentRoutes);
+app.use("/api/audit-logs", auditRoutes);
+app.use("/api/intelligence", intelligenceRoutes);
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
   console.log(`CivicTrack backend running on port ${PORT}`);
 });
+
+
+
+
+
+
+

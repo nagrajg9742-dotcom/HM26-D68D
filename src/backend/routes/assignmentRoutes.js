@@ -1,9 +1,9 @@
 const express = require("express");
 
 const {
-  getAnalytics,
-  getOfficerDashboard
-} = require("../controllers/analyticsController");
+  assignComplaint,
+  getAssignedComplaints
+} = require("../controllers/assignmentController");
 
 const {
   authenticateToken,
@@ -12,18 +12,18 @@ const {
 
 const router = express.Router();
 
-router.get(
-  "/",
+router.post(
+  "/:id/assign",
   authenticateToken,
   authorizeRoles("officer", "admin"),
-  getAnalytics
+  assignComplaint
 );
 
 router.get(
-  "/dashboard",
+  "/assigned",
   authenticateToken,
-  authorizeRoles("officer", "admin"),
-  getOfficerDashboard
+  authorizeRoles("officer"),
+  getAssignedComplaints
 );
 
 module.exports = router;
