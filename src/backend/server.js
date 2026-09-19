@@ -11,6 +11,7 @@ const analyticsRoutes = require("./routes/analyticsRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const evidenceRoutes = require("./routes/evidenceRoutes");
 const statusHistoryRoutes = require("./routes/statusHistoryRoutes");
+const rescueRoutes = require("./routes/rescueRoutes");
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.use("/api/analytics", analyticsRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/evidence", evidenceRoutes);
 app.use("/api/complaints", statusHistoryRoutes);
+app.use("/api/complaints", rescueRoutes);
 
 const PORT = process.env.PORT || 5000;
 
