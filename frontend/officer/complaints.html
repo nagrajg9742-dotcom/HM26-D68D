@@ -12,9 +12,9 @@
 
 <body>
 
-    <!-- =========================
-         HEADER
-         ========================= -->
+    <!-- =====================================================
+         OFFICER HEADER
+         ===================================================== -->
 
     <header class="officer-header">
 
@@ -25,75 +25,143 @@
 
         <nav>
             <a href="dashboard.html">Dashboard</a>
-            <a href="complaints.html" class="active">Complaints</a>
-            <a href="index.html">Logout</a>
+
+            <a href="complaints.html" class="active">
+                Complaints
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
         </nav>
 
     </header>
 
 
-    <!-- =========================
+    <!-- =====================================================
          MAIN CONTENT
-         ========================= -->
+         ===================================================== -->
 
     <main class="complaints-container">
 
+
+        <!-- =================================================
+             PAGE HEADING
+             ================================================= -->
+
         <div class="complaints-heading">
+
             <div>
+
                 <h2>Complaint Queue</h2>
-                <p>Review complaints and identify cases that need attention.</p>
+
+                <p>
+                    Review complaints and identify cases that need attention.
+                </p>
+
             </div>
+
         </div>
 
 
-        <!-- =========================
+        <!-- =================================================
              FILTERS
-             ========================= -->
+             ================================================= -->
 
         <section class="complaint-filters">
 
+
+            <!-- STATUS FILTER -->
+
             <div class="filter-group">
 
-                <label for="statusFilter">Status</label>
+                <label for="statusFilter">
+                    Status
+                </label>
 
                 <select id="statusFilter">
-                    <option value="all">All Statuses</option>
-                    <option value="submitted">Submitted</option>
-                    <option value="assigned">Assigned</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="rescue_required">Rescue Required</option>
+
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="submitted">
+                        Submitted
+                    </option>
+
+                    <option value="assigned">
+                        Assigned
+                    </option>
+
+                    <option value="in_progress">
+                        In Progress
+                    </option>
+
+                    <option value="rescue_required">
+                        Rescue Required
+                    </option>
+
                     <option value="verification_pending">
                         Verification Pending
                     </option>
-                    <option value="closed">Closed</option>
-                    <option value="reopened">Reopened</option>
+
+                    <option value="closed">
+                        Closed
+                    </option>
+
+                    <option value="reopened">
+                        Reopened
+                    </option>
+
                 </select>
 
             </div>
 
+
+            <!-- RISK FILTER -->
 
             <div class="filter-group">
 
-                <label for="riskFilter">Risk</label>
+                <label for="riskFilter">
+                    Risk
+                </label>
 
                 <select id="riskFilter">
-                    <option value="all">All Risks</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+
+                    <option value="all">
+                        All Risks
+                    </option>
+
+                    <option value="low">
+                        Low
+                    </option>
+
+                    <option value="medium">
+                        Medium
+                    </option>
+
+                    <option value="high">
+                        High
+                    </option>
+
                 </select>
 
             </div>
 
 
+            <!-- SEARCH -->
+
             <div class="filter-group search-group">
 
-                <label for="complaintSearch">Search</label>
+                <label for="complaintSearch">
+                    Search
+                </label>
 
                 <input
                     type="search"
                     id="complaintSearch"
                     placeholder="Search Complaint ID"
+                    autocomplete="off"
                 >
 
             </div>
@@ -101,18 +169,21 @@
         </section>
 
 
-        <!-- =========================
+        <!-- =================================================
              COMPLAINT TABLE
-             ========================= -->
+             ================================================= -->
 
         <section class="complaints-table-card">
 
+
             <div class="table-header">
 
-                <h3>Complaints</h3>
+                <h3>
+                    Complaints
+                </h3>
 
                 <span id="complaintCount">
-                    Loading...
+                    0 complaints
                 </span>
 
             </div>
@@ -125,24 +196,55 @@
                     <thead>
 
                         <tr>
-                            <th>Complaint ID</th>
-                            <th>Category</th>
-                            <th>Location</th>
-                            <th>Status</th>
-                            <th>Health</th>
-                            <th>Risk</th>
-                            <th>Priority</th>
-                            <th>Action</th>
+
+                            <th>
+                                Complaint ID
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Health
+                            </th>
+
+                            <th>
+                                Risk
+                            </th>
+
+                            <th>
+                                Priority
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
                         </tr>
 
                     </thead>
 
+
                     <tbody id="complaintsTableBody">
 
                         <tr>
-                            <td colspan="8" class="table-loading">
-                                Complaint data will load from the CivicTrack backend.
+
+                            <td
+                                colspan="8"
+                                class="table-loading"
+                            >
+                                Complaint data will appear here when loaded from the CivicTrack backend.
                             </td>
+
                         </tr>
 
                     </tbody>
@@ -153,8 +255,13 @@
 
         </section>
 
+
     </main>
 
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
 
     <script src="js/officer.js"></script>
 

@@ -1218,3 +1218,164 @@ tbody tr:hover {
 
     box-shadow: 0 0 0 3px rgba(15, 139, 141, 0.12);
 }
+
+/* =========================================================
+   OFFICER NOTIFICATIONS
+   ========================================================= */
+
+.notifications-container {
+    min-height: calc(100vh - 75px);
+
+    padding: 35px 40px;
+
+    background: var(--off-white);
+}
+
+
+/* ---------- Heading ---------- */
+
+.notifications-heading {
+    margin-bottom: 30px;
+}
+
+.notifications-heading h2 {
+    color: var(--navy);
+
+    font-size: 30px;
+
+    margin-bottom: 8px;
+}
+
+.notifications-heading p {
+    color: var(--text-light);
+
+    font-size: 15px;
+}
+
+
+/* ---------- Main Card ---------- */
+
+.notifications-card {
+    background: var(--white);
+
+    border-radius: 12px;
+
+    box-shadow: 0 5px 18px rgba(11, 31, 51, 0.08);
+
+    overflow: hidden;
+}
+
+
+/* ---------- Card Header ---------- */
+
+.notifications-card-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 22px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.notifications-card-header h3 {
+    color: var(--navy);
+
+    font-size: 20px;
+}
+
+.notifications-card-header span {
+    color: var(--text-light);
+
+    font-size: 14px;
+}
+
+
+/* ---------- Empty State ---------- */
+
+.notification-empty {
+    padding: 50px 30px;
+
+    text-align: center;
+
+    color: var(--text-light);
+
+    font-size: 14px;
+}
+
+
+/* ---------- Notification Item ---------- */
+
+.notification-item {
+    padding: 20px 22px;
+
+    border-bottom: 1px solid #E7ECEE;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+.notification-item h4 {
+    color: var(--navy);
+
+    font-size: 15px;
+
+    margin-bottom: 6px;
+}
+
+.notification-item p {
+    color: var(--text-light);
+
+    font-size: 14px;
+
+    line-height: 1.5;
+}
+
+.notification-item small {
+    display: block;
+
+    margin-top: 8px;
+
+    color: #8A969E;
+
+    font-size: 12px;
+}
+
+
+/* ---------- Notification Types ---------- */
+
+.notification-item.info {
+    border-left: 5px solid var(--teal);
+}
+
+.notification-item.success {
+    border-left: 5px solid var(--success);
+}
+
+.notification-item.warning {
+    border-left: 5px solid var(--warning);
+}
+
+.notification-item.critical {
+    border-left: 5px solid var(--danger);
+}
+
+
+/* ---------- Mobile ---------- */
+
+@media (max-width: 800px) {
+
+    .notifications-container {
+        padding: 25px 20px;
+    }
+
+    .notifications-card-header {
+        align-items: flex-start;
+
+        gap: 10px;
+    }
+
+}
