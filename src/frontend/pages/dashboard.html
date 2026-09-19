@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dashboard | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h2>CivicTrack</h2>
+            <span>Mysuru Civic Services</span>
+        </div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="report.html">Report</a>
+            <a href="tracking.html">Track</a>
+            <a href="complaints.html">My Complaints</a>
+            <a href="dashboard.html" class="active">Dashboard</a>
+        </nav>
+    </header>
+
+
+    <!-- Dashboard -->
+    <main class="dashboard-page">
+
+        <section class="dashboard-header">
+            <div>
+                <p class="dashboard-label">CITIZEN DASHBOARD</p>
+                <h1>Welcome to CivicTrack 👋</h1>
+                <p>
+                    Report civic problems, track your complaints,
+                    and stay updated until they are resolved.
+                </p>
+            </div>
+
+            <a href="report.html" class="dashboard-report-btn">
+                + Report a Problem
+            </a>
+        </section>
+
+
+        <!-- Quick Actions -->
+        <section class="dashboard-section">
+
+            <h2>Quick Actions</h2>
+
+            <div class="dashboard-actions">
+
+                <a href="report.html" class="dashboard-action-card">
+                    <div class="action-icon">📍</div>
+                    <h3>Report a Problem</h3>
+                    <p>
+                        Report garbage, road damage, streetlights,
+                        water issues and other civic problems.
+                    </p>
+                </a>
+
+                <a href="complaints.html" class="dashboard-action-card">
+                    <div class="action-icon">📋</div>
+                    <h3>My Complaints</h3>
+                    <p>
+                        View and manage the complaints you have submitted.
+                    </p>
+                </a>
+
+                <a href="tracking.html" class="dashboard-action-card">
+                    <div class="action-icon">📊</div>
+                    <h3>Track Complaint</h3>
+                    <p>
+                        Follow the progress of your complaint.
+                    </p>
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- Complaint Overview -->
+        <section class="dashboard-section">
+
+            <div class="section-title-row">
+                <h2>Complaint Overview</h2>
+
+                <a href="complaints.html">
+                    View All
+                </a>
+            </div>
+
+            <div class="complaint-stats">
+
+                <div class="stat-card">
+                    <span>Submitted</span>
+                    <strong id="submittedCount">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>In Progress</span>
+                    <strong id="progressCount">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Resolved</span>
+                    <strong id="resolvedCount">0</strong>
+                </div>
+
+                <div class="stat-card">
+                    <span>Needs Attention</span>
+                    <strong id="attentionCount">0</strong>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Recent Complaints -->
+        <section class="dashboard-section">
+
+            <div class="section-title-row">
+                <h2>Recent Complaints</h2>
+
+                <a href="complaints.html">
+                    View All
+                </a>
+            </div>
+
+            <div id="recentComplaints" class="recent-complaints">
+
+                <div class="empty-state">
+                    <div class="empty-icon">📋</div>
+
+                    <h3>No complaints yet</h3>
+
+                    <p>
+                        Your submitted complaints will appear here.
+                    </p>
+
+                    <a href="report.html" class="dashboard-report-btn">
+                        Report Your First Problem
+                    </a>
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 CivicTrack | Mysuru Civic Services</p>
+    </footer>
+
+</body>
+</html>
