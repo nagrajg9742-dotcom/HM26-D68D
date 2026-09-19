@@ -10,6 +10,7 @@ const complaintRoutes = require("./routes/complaintRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const evidenceRoutes = require("./routes/evidenceRoutes");
+const statusHistoryRoutes = require("./routes/statusHistoryRoutes");
 
 const app = express();
 
@@ -44,6 +45,7 @@ app.use("/api/complaints", complaintRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/notifications", notificationRoutes);
 app.use("/api/evidence", evidenceRoutes);
+app.use("/api/complaints", statusHistoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 
