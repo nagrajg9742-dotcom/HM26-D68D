@@ -153,6 +153,8 @@ const updateComplaintStatus = async (req, res) => {
     const complaint = complaintResult.rows[0];
     const oldStatus = complaint.status;
 
+    
+
     const updatedResult = await pool.query(
       `UPDATE complaints
        SET status = $1,
@@ -161,6 +163,24 @@ const updateComplaintStatus = async (req, res) => {
        RETURNING *`,
       [status, complaintId]
     );
+
+    const notificationTitle = "Complaint status updated";
+
+const notificationMessage =
+  `Your complaint "${complaint.title}" status has been changed from ` +
+  `"${oldStatus}" to "${status}".`;
+
+await pool.query(
+  `INSERT INTO notifications
+   (user_id, complaint_id, title, message)
+   VALUES ($1, $2, $3, $4)`,
+  [
+    complaint.citizen_id,
+    complaint.id,
+    notificationTitle,
+    notificationMessage
+  ]
+);
 
     await pool.query(
       `INSERT INTO complaint_status_history
