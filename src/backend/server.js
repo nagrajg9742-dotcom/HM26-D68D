@@ -12,6 +12,7 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const evidenceRoutes = require("./routes/evidenceRoutes");
 const statusHistoryRoutes = require("./routes/statusHistoryRoutes");
 const rescueRoutes = require("./routes/rescueRoutes");
+const verificationRoutes = require("./routes/verificationRoutes");
 
 const app = express();
 
@@ -48,6 +49,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/evidence", evidenceRoutes);
 app.use("/api/complaints", statusHistoryRoutes);
 app.use("/api/complaints", rescueRoutes);
+app.use("/api/complaints", verificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
