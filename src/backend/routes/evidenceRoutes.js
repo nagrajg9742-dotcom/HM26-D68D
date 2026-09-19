@@ -2,11 +2,13 @@ const express = require("express");
 
 const {
   uploadEvidence,
-  getEvidence
+  getEvidence,
+  uploadProof
 } = require("../controllers/evidenceController");
 
 const {
-  authenticateToken
+  authenticateToken,
+  authorizeRoles
 } = require("../middleware/auth");
 
 const multer = require("multer");
@@ -33,10 +35,11 @@ const upload = multer({
 });
 
 router.post(
-  "/:id",
+  "/:id/proof",
   authenticateToken,
-  upload.single("evidence"),
-  uploadEvidence
+  authorizeRoles("officer", "admin"),
+  upload.single("proof"),
+  uploadProof
 );
 
 router.get(

@@ -122,7 +122,79 @@ const getEvidence = async (req, res) => {
   }
 };
 
+const uploadProof = async (req, res) => {
+  try {
+    const complaintId = req.params.id;
+    const uploadedBy = req.user.id;
+
+    if (!req.file) {
+      return res.status(400).json({
+        success: false,
+        message: "Proof file is required"
+      });
+    }
+
+    let complaintResult;
+
+if (req.user.role === "admin") {
+  complaintResult = await pool.query(
+    "SELECT id FROM complaints WHERE id = $1",
+    [complaintId]
+  );
+} else {
+  complaintResult = await pool.query(
+    `SELECT c.id
+     FROM complaints c
+     JOIN complaint_assignments ca
+       ON c.id = ca.complaint_id
+     WHERE c.id = $1
+       AND ca.officer_id = $2
+       AND ca.status = 'active'`,
+    [complaintId, uploadedBy]
+  );
+}
+if (complaintResult.rows.length === 0) {
+  return res.status(403).json({
+    success: false,
+    message: "You are not authorized to upload proof for this complaint"
+  });
+}
+
+    const fileName = req.file.originalname;
+    const fileUrl = `/uploads/evidence/${req.file.filename}`;
+    const fileType = req.file.mimetype;
+
+    const result = await pool.query(
+      `INSERT INTO evidence
+       (complaint_id, uploaded_by, file_name, file_url, file_type)
+       VALUES ($1, $2, $3, $4, $5)
+       RETURNING *`,
+      [
+        complaintId,
+        uploadedBy,
+        fileName,
+        fileUrl,
+        fileType
+      ]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Proof of progress uploaded successfully",
+      proof: result.rows[0]
+    });
+  } catch (error) {
+    console.error("Upload proof error:", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
 module.exports = {
   uploadEvidence,
-  getEvidence
+  getEvidence,
+  uploadProof
 };
