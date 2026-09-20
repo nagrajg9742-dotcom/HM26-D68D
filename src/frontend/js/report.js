@@ -7,10 +7,12 @@ const longitudeInput = document.getElementById("longitude");
 const complaintForm = document.getElementById("complaintForm");
 const complaintMessage = document.getElementById("complaintMessage");
 
+const API_URL = "http://localhost:5000/api/complaints";
 
-// -------------------------
-// Get Current Location
-// -------------------------
+
+// =====================================================
+// GET CURRENT LOCATION
+// =====================================================
 
 locationBtn.addEventListener("click", function () {
 
@@ -60,118 +62,310 @@ locationBtn.addEventListener("click", function () {
 });
 
 
-// -------------------------
-// Submit Complaint
-// -------------------------
+// =====================================================
+// SAVE OFFLINE COMPLAINT
+// =====================================================
 
-complaintForm.addEventListener("submit", async function (event) {
+function saveComplaintOffline(complaint) {
 
-    event.preventDefault();
-
-    const category =
-        document.getElementById("category").value;
-
-    const description =
-        document.getElementById("description").value.trim();
-
-    const latitude =
-        latitudeInput.value;
-
-    const longitude =
-        longitudeInput.value;
-
-    const token =
-        localStorage.getItem("token");
-
-
-    // Check login
-    if (!token) {
-        complaintMessage.textContent =
-            "Please login before submitting a complaint.";
-        return;
-    }
-
-
-    // Check location
-    if (!latitude || !longitude) {
-        complaintMessage.textContent =
-            "Please capture your location before submitting.";
-        return;
-    }
-
-
-    // Check required fields
-    if (!category || !description) {
-        complaintMessage.textContent =
-            "Please fill in all required complaint details.";
-        return;
-    }
-
-
-    complaintMessage.textContent =
-        "Submitting complaint...";
-
-
-    try {
-
-        const response = await fetch(
-            "http://localhost:5000/api/complaints",
-            {
-                method: "POST",
-
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": "Bearer " + token
-                },
-
-                body: JSON.stringify({
-
-                    // Backend requires title
-                    title: category + " Complaint",
-
-                    description: description,
-
-                    category: category,
-
-                    latitude: Number(latitude),
-
-                    longitude: Number(longitude)
-
-                })
-            }
+    const pendingComplaints =
+        JSON.parse(
+            localStorage.getItem("pendingComplaints") || "[]"
         );
 
+    pendingComplaints.push(complaint);
 
-        const data = await response.json();
+    localStorage.setItem(
+        "pendingComplaints",
+        JSON.stringify(pendingComplaints)
+    );
+
+    console.log("Complaint saved offline.");
+}
 
 
-        if (response.ok && data.success) {
+// =====================================================
+// SYNC OFFLINE COMPLAINTS
+// =====================================================
+
+async function syncOfflineComplaints() {
+
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+        return;
+    }
+
+    const pendingComplaints =
+        JSON.parse(
+            localStorage.getItem("pendingComplaints") || "[]"
+        );
+
+    if (pendingComplaints.length === 0) {
+        return;
+    }
+
+    complaintMessage.textContent =
+        "Internet restored. Syncing offline complaints...";
+
+    const remainingComplaints = [];
+
+    for (const complaint of pendingComplaints) {
+
+        try {
+
+            const response = await fetch(
+                API_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+
+                    body: JSON.stringify(complaint)
+                }
+            );
+
+            const data = await response.json();
+
+            if (response.ok && data.success) {
+
+                console.log(
+                    "Offline complaint synced successfully."
+                );
+
+            } else {
+
+                // Keep failed complaint for another attempt
+                remainingComplaints.push(complaint);
+
+                console.log(
+                    "Complaint could not be synced:",
+                    data.message
+                );
+            }
+
+        } catch (error) {
+
+            // Internet may still be unavailable
+            remainingComplaints.push(complaint);
+
+            console.log(
+                "Sync failed:",
+                error
+            );
+        }
+    }
+
+    localStorage.setItem(
+        "pendingComplaints",
+        JSON.stringify(remainingComplaints)
+    );
+
+    if (remainingComplaints.length === 0) {
+
+        complaintMessage.textContent =
+            "✓ Offline complaints synced successfully!";
+
+    } else {
+
+        complaintMessage.textContent =
+            "Some offline complaints are still waiting to sync.";
+    }
+}
+
+
+// =====================================================
+// AUTOMATIC SYNC WHEN INTERNET RETURNS
+// =====================================================
+
+window.addEventListener("online", function () {
+
+    console.log("Internet connection restored.");
+
+    syncOfflineComplaints();
+});
+
+
+// =====================================================
+// SUBMIT COMPLAINT
+// =====================================================
+
+complaintForm.addEventListener(
+    "submit",
+    async function (event) {
+
+        event.preventDefault();
+
+        const category =
+            document.getElementById("category").value;
+
+        const description =
+            document.getElementById("description").value.trim();
+
+        const latitude =
+            latitudeInput.value;
+
+        const longitude =
+            longitudeInput.value;
+
+        const token =
+            localStorage.getItem("token");
+
+
+        // -------------------------------------------------
+        // CHECK LOGIN
+        // -------------------------------------------------
+
+        if (!token) {
 
             complaintMessage.textContent =
-                "✓ Complaint submitted successfully!";
+                "Please login before submitting a complaint.";
 
-            complaintForm.reset();
-
-            locationStatus.textContent =
-                "Location not captured yet.";
-
-            locationBtn.textContent =
-                "📍 Use My Current Location";
-
-        } else {
-
-            complaintMessage.textContent =
-                data.message || "Complaint submission failed.";
+            return;
         }
 
 
-    } catch (error) {
+        // -------------------------------------------------
+        // CHECK LOCATION
+        // -------------------------------------------------
 
-        console.error("Complaint submission error:", error);
+        if (!latitude || !longitude) {
+
+            complaintMessage.textContent =
+                "Please capture your location before submitting.";
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // CHECK REQUIRED FIELDS
+        // -------------------------------------------------
+
+        if (!category || !description) {
+
+            complaintMessage.textContent =
+                "Please fill in all required complaint details.";
+
+            return;
+        }
+
+
+        // -------------------------------------------------
+        // CREATE COMPLAINT DATA
+        // -------------------------------------------------
+
+        const complaintData = {
+
+            title: category + " Complaint",
+
+            description: description,
+
+            category: category,
+
+            latitude: Number(latitude),
+
+            longitude: Number(longitude)
+
+        };
+
+
+        // -------------------------------------------------
+        // OFFLINE MODE
+        // -------------------------------------------------
+
+        if (!navigator.onLine) {
+
+            saveComplaintOffline(complaintData);
+
+            complaintMessage.textContent =
+                "📴 Offline — complaint saved and queued for sync.";
+
+            return;
+        }
+
 
         complaintMessage.textContent =
-            "Unable to connect to the server.";
+            "Submitting complaint...";
+
+
+        // -------------------------------------------------
+        // SEND TO BACKEND
+        // -------------------------------------------------
+
+        try {
+
+            const response = await fetch(
+                API_URL,
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + token
+                    },
+
+                    body: JSON.stringify(complaintData)
+                }
+            );
+
+
+            const data = await response.json();
+
+
+            if (response.ok && data.success) {
+
+                complaintMessage.textContent =
+                    "✓ Complaint submitted successfully!";
+
+                complaintForm.reset();
+
+                locationStatus.textContent =
+                    "Location not captured yet.";
+
+                locationBtn.textContent =
+                    "📍 Use My Current Location";
+
+            } else {
+
+                complaintMessage.textContent =
+                    data.message ||
+                    "Complaint submission failed.";
+            }
+
+
+        } catch (error) {
+
+            console.error(
+                "Complaint submission error:",
+                error
+            );
+
+            // -------------------------------------------------
+            // NETWORK FAILURE FALLBACK
+            // -------------------------------------------------
+
+            saveComplaintOffline(complaintData);
+
+            complaintMessage.textContent =
+                "📴 Network unavailable — complaint saved and queued.";
+        }
+
+    }
+);
+
+
+// =====================================================
+// TRY SYNC ON PAGE LOAD
+// =====================================================
+
+window.addEventListener("load", function () {
+
+    if (navigator.onLine) {
+        syncOfflineComplaints();
     }
 
 });
-
