@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CivicTrack - Notifications</title>
+
+    <link
+        rel="stylesheet"
+        href="css/officer.css"
+    >
+
+</head>
+
+
+<body>
+
+    <!-- =====================================================
+         OFFICER HEADER
+         ===================================================== -->
+
+    <header class="officer-header">
+
+        <div class="brand">
+
+            <h1>CivicTrack</h1>
+
+            <p>Officer Portal</p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="complaints.html">
+                Complaints
+            </a>
+
+            <a
+                href="notifications.html"
+                class="active"
+            >
+                Notifications
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
+
+        </nav>
+
+    </header>
+
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="notifications-container">
+
+
+        <!-- PAGE HEADING -->
+
+        <div class="notifications-heading">
+
+            <h2>
+                Notifications
+            </h2>
+
+            <p>
+                Stay updated on complaint activity and important actions.
+            </p>
+
+        </div>
+
+
+
+        <!-- =================================================
+             NOTIFICATIONS CARD
+             ================================================= -->
+
+        <section class="notifications-card">
+
+
+            <div class="notifications-card-header">
+
+                <h3>
+                    Recent Notifications
+                </h3>
+
+                <span id="notificationCount">
+                    0 notifications
+                </span>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 NOTIFICATION LIST
+                 ================================================= -->
+
+            <div id="notificationList">
+
+                <div class="notification-empty">
+
+                    Notifications will appear here when loaded
+                    from the CivicTrack backend.
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/officer.js"></script>
+
+</body>
+
+</html>
