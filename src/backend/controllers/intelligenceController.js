@@ -3,8 +3,8 @@ const pool = require("../utils/db");
 const getComplaint = async (id) => {
   const result = await pool.query(
     `SELECT c.*,
-            COUNT(e.id)::int AS evidence_count,
-            COUNT(es.id)::int AS rescue_count
+            COUNT(DISTINCT e.id)::int AS evidence_count,
+            COUNT(DISTINCT es.id)::int AS rescue_count
      FROM complaints c
      LEFT JOIN evidence e ON e.complaint_id = c.id
      LEFT JOIN escalations es ON es.complaint_id = c.id
@@ -17,9 +17,9 @@ const getComplaint = async (id) => {
 };
 
 
-// ===============================
+// ========================================
 // HEALTH ENGINE
-// ===============================
+// ========================================
 const healthEngine = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -59,6 +59,7 @@ const healthEngine = async (req, res) => {
       health,
       age_hours: Math.round(ageHours * 10) / 10
     });
+
   } catch (error) {
     console.error("Health engine error:", error.message);
 
@@ -70,9 +71,9 @@ const healthEngine = async (req, res) => {
 };
 
 
-// ===============================
+// ========================================
 // RISK PREDICTION
-// ===============================
+// ========================================
 const riskPrediction = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -86,7 +87,8 @@ const riskPrediction = async (req, res) => {
 
     let score = 20;
 
-    // 1. Complaint age
+
+    // 1. COMPLAINT AGE
     const ageHours =
       (Date.now() - new Date(complaint.created_at).getTime()) / 3600000;
 
@@ -95,7 +97,7 @@ const riskPrediction = async (req, res) => {
     if (ageHours > 72) score += 25;
 
 
-    // 2. Time since last update/activity
+    // 2. INACTIVITY
     const updatedAt =
       complaint.updated_at || complaint.created_at;
 
@@ -106,7 +108,7 @@ const riskPrediction = async (req, res) => {
     if (inactiveHours > 48) score += 15;
 
 
-    // 3. Priority
+    // 3. PRIORITY
     if (complaint.priority === "high") {
       score += 15;
     }
@@ -116,25 +118,25 @@ const riskPrediction = async (req, res) => {
     }
 
 
-    // 4. Current status
+    // 4. STATUS
     if (complaint.status === "submitted") {
       score += 10;
     }
 
 
-    // 5. Rescue activity
+    // 5. RESCUE ACTIVITY
     if (complaint.rescue_count > 0) {
       score += 15;
     }
 
 
-    // 6. Evidence
+    // 6. EVIDENCE
     if (complaint.evidence_count === 0) {
       score += 5;
     }
 
 
-    // 7. Complaint history
+    // 7. STATUS HISTORY
     const historyResult = await pool.query(
       `SELECT COUNT(*)::int AS history_count
        FROM complaint_status_history
@@ -145,13 +147,12 @@ const riskPrediction = async (req, res) => {
     const historyCount =
       historyResult.rows[0].history_count;
 
-    // No recorded status activity
     if (historyCount === 0) {
       score += 10;
     }
 
 
-    // 8. Category + location pattern
+    // 8. CATEGORY + LOCATION
     let nearbyCategoryComplaints = 0;
 
     if (
@@ -180,8 +181,8 @@ const riskPrediction = async (req, res) => {
         locationResult.rows[0].complaint_count;
 
 
-      // Repeated complaints of the same
-      // category in the same area
+      // Repeated complaints in the same
+      // area indicate a recurring issue.
       if (nearbyCategoryComplaints >= 3) {
         score += 10;
       }
@@ -205,18 +206,27 @@ const riskPrediction = async (req, res) => {
         : "low";
 
 
-    // Response
     res.json({
       success: true,
       complaint_id: complaint.id,
       risk_score: score,
       risk_level: level,
-      age_hours: Math.round(ageHours * 10) / 10,
-      inactive_hours: Math.round(inactiveHours * 10) / 10,
-      category: complaint.category,
-      history_count: historyCount,
+
+      age_hours:
+        Math.round(ageHours * 10) / 10,
+
+      inactive_hours:
+        Math.round(inactiveHours * 10) / 10,
+
+      category:
+        complaint.category,
+
+      history_count:
+        historyCount,
+
       nearby_category_complaints:
         nearbyCategoryComplaints,
+
       prediction:
         "This complaint may be at risk of being forgotten if no action is taken."
     });
@@ -235,9 +245,9 @@ const riskPrediction = async (req, res) => {
 };
 
 
-// ===============================
+// ========================================
 // RISK EXPLANATION
-// ===============================
+// ========================================
 const riskExplanation = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -251,23 +261,158 @@ const riskExplanation = async (req, res) => {
 
     const factors = [];
 
+
+    // 1. COMPLAINT AGE
+    const ageHours =
+      (Date.now() - new Date(complaint.created_at).getTime()) / 3600000;
+
+    if (ageHours > 72) {
+      factors.push(
+        "Complaint has been open for more than 72 hours"
+      );
+    } else if (ageHours > 48) {
+      factors.push(
+        "Complaint has been open for more than 48 hours"
+      );
+    } else if (ageHours > 24) {
+      factors.push(
+        "Complaint has been open for more than 24 hours"
+      );
+    }
+
+
+    // 2. INACTIVITY
+    const updatedAt =
+      complaint.updated_at || complaint.created_at;
+
+    const inactiveHours =
+      (Date.now() - new Date(updatedAt).getTime()) / 3600000;
+
+    if (inactiveHours > 48) {
+      factors.push(
+        "No recent activity for more than 48 hours"
+      );
+    } else if (inactiveHours > 24) {
+      factors.push(
+        "No recent activity for more than 24 hours"
+      );
+    }
+
+
+    // 3. PRIORITY
     if (complaint.priority === "critical") {
       factors.push("Critical priority");
     } else if (complaint.priority === "high") {
       factors.push("High priority");
     }
 
-    if (complaint.rescue_count > 0) {
-      factors.push("Rescue request exists");
+
+    // 4. STATUS
+    if (complaint.status === "submitted") {
+      factors.push(
+        "Complaint is still in submitted status"
+      );
     }
 
-    if (complaint.evidence_count === 0) {
-      factors.push("No evidence uploaded");
+
+    // 5. RESCUE
+    if (complaint.rescue_count > 0) {
+      factors.push(
+        "Rescue request exists"
+      );
     }
+
+
+    // 6. EVIDENCE
+    if (complaint.evidence_count === 0) {
+      factors.push(
+        "No evidence uploaded"
+      );
+    }
+
+
+    // 7. HISTORY
+    const historyResult = await pool.query(
+      `SELECT COUNT(*)::int AS history_count
+       FROM complaint_status_history
+       WHERE complaint_id = $1`,
+      [complaint.id]
+    );
+
+    const historyCount =
+      historyResult.rows[0].history_count;
+
+    if (historyCount === 0) {
+      factors.push(
+        "No status history recorded"
+      );
+    } else {
+      factors.push(
+        `${historyCount} status history records found`
+      );
+    }
+
+
+    // 8. CATEGORY + LOCATION
+    let nearbyCategoryComplaints = 0;
+
+    if (
+      complaint.category &&
+      complaint.latitude !== null &&
+      complaint.longitude !== null
+    ) {
+      const locationResult = await pool.query(
+        `SELECT COUNT(*)::int AS complaint_count
+         FROM complaints
+         WHERE id <> $1
+           AND category = $2
+           AND latitude IS NOT NULL
+           AND longitude IS NOT NULL
+           AND ABS(latitude - $3) <= 0.01
+           AND ABS(longitude - $4) <= 0.01`,
+        [
+          complaint.id,
+          complaint.category,
+          complaint.latitude,
+          complaint.longitude
+        ]
+      );
+
+      nearbyCategoryComplaints =
+        locationResult.rows[0].complaint_count;
+
+
+      if (nearbyCategoryComplaints >= 5) {
+        factors.push(
+          "Multiple similar complaints exist nearby"
+        );
+      } else if (nearbyCategoryComplaints >= 3) {
+        factors.push(
+          "Similar complaints exist nearby"
+        );
+      }
+    }
+
 
     res.json({
       success: true,
       complaint_id: complaint.id,
+
+      category:
+        complaint.category,
+
+      age_hours:
+        Math.round(ageHours * 10) / 10,
+
+      inactive_hours:
+        Math.round(inactiveHours * 10) / 10,
+
+      history_count:
+        historyCount,
+
+      nearby_category_complaints:
+        nearbyCategoryComplaints,
+
       factors
     });
 
@@ -285,9 +430,9 @@ const riskExplanation = async (req, res) => {
 };
 
 
-// ===============================
+// ========================================
 // RESCUE DETECTION
-// ===============================
+// ========================================
 const rescueDetection = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -324,9 +469,9 @@ const rescueDetection = async (req, res) => {
 };
 
 
-// ===============================
+// ========================================
 // EVIDENCE ASSISTANCE
-// ===============================
+// ========================================
 const evidenceAssistance = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -342,6 +487,7 @@ const evidenceAssistance = async (req, res) => {
       success: true,
       complaint_id: complaint.id,
       evidence_count: complaint.evidence_count,
+
       recommendation:
         complaint.evidence_count === 0
           ? "Upload supporting evidence if available"
@@ -362,9 +508,9 @@ const evidenceAssistance = async (req, res) => {
 };
 
 
-// ===============================
+// ========================================
 // EXPORTS
-// ===============================
+// ========================================
 module.exports = {
   healthEngine,
   riskPrediction,
