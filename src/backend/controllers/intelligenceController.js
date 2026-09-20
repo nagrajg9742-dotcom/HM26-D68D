@@ -16,6 +16,10 @@ const getComplaint = async (id) => {
   return result.rows[0];
 };
 
+
+// ===============================
+// HEALTH ENGINE
+// ===============================
 const healthEngine = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -32,11 +36,20 @@ const healthEngine = async (req, res) => {
 
     let health = "healthy";
 
-    if (complaint.status === "resolved" || complaint.status === "verified") {
+    if (
+      complaint.status === "resolved" ||
+      complaint.status === "verified"
+    ) {
       health = "completed";
-    } else if (ageHours > 72 || complaint.priority === "critical") {
+    } else if (
+      ageHours > 72 ||
+      complaint.priority === "critical"
+    ) {
       health = "critical";
-    } else if (ageHours > 24 || complaint.priority === "high") {
+    } else if (
+      ageHours > 24 ||
+      complaint.priority === "high"
+    ) {
       health = "at_risk";
     }
 
@@ -56,6 +69,10 @@ const healthEngine = async (req, res) => {
   }
 };
 
+
+// ===============================
+// RISK PREDICTION
+// ===============================
 const riskPrediction = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -69,38 +86,146 @@ const riskPrediction = async (req, res) => {
 
     let score = 20;
 
-const ageHours =
-  (Date.now() - new Date(complaint.created_at).getTime()) / 3600000;
+    // 1. Complaint age
+    const ageHours =
+      (Date.now() - new Date(complaint.created_at).getTime()) / 3600000;
 
-// Older complaints have a higher chance of being forgotten
-if (ageHours > 24) score += 15;
-if (ageHours > 48) score += 20;
-if (ageHours > 72) score += 25;
+    if (ageHours > 24) score += 15;
+    if (ageHours > 48) score += 20;
+    if (ageHours > 72) score += 25;
 
-// Existing risk factors
-if (complaint.priority === "high") score += 15;
-if (complaint.priority === "critical") score += 25;
-if (complaint.status === "submitted") score += 10;
-if (complaint.rescue_count > 0) score += 15;
-if (complaint.evidence_count === 0) score += 5;
 
-score = Math.min(score, 100);
+    // 2. Time since last update/activity
+    const updatedAt =
+      complaint.updated_at || complaint.created_at;
 
-const level =
-  score >= 70 ? "high" :
-  score >= 40 ? "medium" :
-  "low";
+    const inactiveHours =
+      (Date.now() - new Date(updatedAt).getTime()) / 3600000;
 
-   res.json({
-  success: true,
-  complaint_id: complaint.id,
-  risk_score: score,
-  risk_level: level,
-  age_hours: Math.round(ageHours * 10) / 10,
-  prediction: "This complaint may be at risk of being forgotten if no action is taken."
-});
+    if (inactiveHours > 24) score += 10;
+    if (inactiveHours > 48) score += 15;
+
+
+    // 3. Priority
+    if (complaint.priority === "high") {
+      score += 15;
+    }
+
+    if (complaint.priority === "critical") {
+      score += 25;
+    }
+
+
+    // 4. Current status
+    if (complaint.status === "submitted") {
+      score += 10;
+    }
+
+
+    // 5. Rescue activity
+    if (complaint.rescue_count > 0) {
+      score += 15;
+    }
+
+
+    // 6. Evidence
+    if (complaint.evidence_count === 0) {
+      score += 5;
+    }
+
+
+    // 7. Complaint history
+    const historyResult = await pool.query(
+      `SELECT COUNT(*)::int AS history_count
+       FROM complaint_status_history
+       WHERE complaint_id = $1`,
+      [complaint.id]
+    );
+
+    const historyCount =
+      historyResult.rows[0].history_count;
+
+    // No recorded status activity
+    if (historyCount === 0) {
+      score += 10;
+    }
+
+
+    // 8. Category + location pattern
+    let nearbyCategoryComplaints = 0;
+
+    if (
+      complaint.category &&
+      complaint.latitude !== null &&
+      complaint.longitude !== null
+    ) {
+      const locationResult = await pool.query(
+        `SELECT COUNT(*)::int AS complaint_count
+         FROM complaints
+         WHERE id <> $1
+           AND category = $2
+           AND latitude IS NOT NULL
+           AND longitude IS NOT NULL
+           AND ABS(latitude - $3) <= 0.01
+           AND ABS(longitude - $4) <= 0.01`,
+        [
+          complaint.id,
+          complaint.category,
+          complaint.latitude,
+          complaint.longitude
+        ]
+      );
+
+      nearbyCategoryComplaints =
+        locationResult.rows[0].complaint_count;
+
+
+      // Repeated complaints of the same
+      // category in the same area
+      if (nearbyCategoryComplaints >= 3) {
+        score += 10;
+      }
+
+      if (nearbyCategoryComplaints >= 5) {
+        score += 10;
+      }
+    }
+
+
+    // Keep score between 0 and 100
+    score = Math.min(score, 100);
+
+
+    // Risk level
+    const level =
+      score >= 70
+        ? "high"
+        : score >= 40
+        ? "medium"
+        : "low";
+
+
+    // Response
+    res.json({
+      success: true,
+      complaint_id: complaint.id,
+      risk_score: score,
+      risk_level: level,
+      age_hours: Math.round(ageHours * 10) / 10,
+      inactive_hours: Math.round(inactiveHours * 10) / 10,
+      category: complaint.category,
+      history_count: historyCount,
+      nearby_category_complaints:
+        nearbyCategoryComplaints,
+      prediction:
+        "This complaint may be at risk of being forgotten if no action is taken."
+    });
+
   } catch (error) {
-    console.error("Risk prediction error:", error.message);
+    console.error(
+      "Risk prediction error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -109,6 +234,10 @@ const level =
   }
 };
 
+
+// ===============================
+// RISK EXPLANATION
+// ===============================
 const riskExplanation = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -141,8 +270,12 @@ const riskExplanation = async (req, res) => {
       complaint_id: complaint.id,
       factors
     });
+
   } catch (error) {
-    console.error("Risk explanation error:", error.message);
+    console.error(
+      "Risk explanation error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -151,6 +284,10 @@ const riskExplanation = async (req, res) => {
   }
 };
 
+
+// ===============================
+// RESCUE DETECTION
+// ===============================
 const rescueDetection = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -172,8 +309,12 @@ const rescueDetection = async (req, res) => {
       complaint_id: complaint.id,
       rescue_required: detected
     });
+
   } catch (error) {
-    console.error("Rescue detection error:", error.message);
+    console.error(
+      "Rescue detection error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -182,6 +323,10 @@ const rescueDetection = async (req, res) => {
   }
 };
 
+
+// ===============================
+// EVIDENCE ASSISTANCE
+// ===============================
 const evidenceAssistance = async (req, res) => {
   try {
     const complaint = await getComplaint(req.params.id);
@@ -202,8 +347,12 @@ const evidenceAssistance = async (req, res) => {
           ? "Upload supporting evidence if available"
           : "Evidence is available for review"
     });
+
   } catch (error) {
-    console.error("Evidence assistance error:", error.message);
+    console.error(
+      "Evidence assistance error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -212,6 +361,10 @@ const evidenceAssistance = async (req, res) => {
   }
 };
 
+
+// ===============================
+// EXPORTS
+// ===============================
 module.exports = {
   healthEngine,
   riskPrediction,
