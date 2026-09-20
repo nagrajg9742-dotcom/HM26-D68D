@@ -461,9 +461,103 @@ const updateComplaintStatus = async (req, res) => {
 // =====================================================
 // EXPORT CONTROLLERS
 // =====================================================
+
+
+// =====================================================
+// CITIZEN VERIFICATION
+// =====================================================
+const verifyComplaint = async (req, res) => {
+  try {
+    const complaintId = req.params.id;
+    const { status } = req.body;
+
+    if (!["verified", "reopened"].includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid verification status"
+      });
+    }
+
+    const complaintResult = await pool.query(
+      "SELECT * FROM complaints WHERE id = $1",
+      [complaintId]
+    );
+
+    if (complaintResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Complaint not found"
+      });
+    }
+
+    const complaint = complaintResult.rows[0];
+
+    // Only the citizen who created the complaint can verify it
+    if (req.user.role === "citizen" && complaint.citizen_id !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to verify this complaint"
+      });
+    }
+
+    const oldStatus = complaint.status;
+
+    const updatedResult = await pool.query(
+      `UPDATE complaints
+       SET status = $1,
+           updated_at = CURRENT_TIMESTAMP
+       WHERE id = $2
+       RETURNING *`,
+      [status, complaintId]
+    );
+
+    await pool.query(
+      `INSERT INTO complaint_status_history
+       (
+         complaint_id,
+         old_status,
+         new_status,
+         changed_by,
+         note
+       )
+       VALUES ($1, $2, $3, $4, $5)`,
+      [
+        complaintId,
+        oldStatus,
+        status,
+        req.user.id,
+        status === "verified"
+          ? "Citizen verified the resolution"
+          : "Citizen reported that the issue is not resolved"
+      ]
+    );
+
+    res.json({
+      success: true,
+      message:
+        status === "verified"
+          ? "Complaint resolution verified"
+          : "Complaint reopened",
+      complaint: updatedResult.rows[0]
+    });
+
+  } catch (error) {
+    console.error(
+      "Verify complaint error:",
+      error.message
+    );
+
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
 module.exports = {
   createComplaint,
   getComplaints,
   getComplaintById,
-  updateComplaintStatus
+  updateComplaintStatus,
+  verifyComplaint
 };

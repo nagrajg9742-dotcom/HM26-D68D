@@ -4,6 +4,7 @@ const {
   createComplaint,
   getComplaints,
   getComplaintById,
+  verifyComplaint,
   updateComplaintStatus
 } = require("../controllers/complaintController");
 
@@ -17,6 +18,13 @@ const router = express.Router();
 router.post("/", authenticateToken, createComplaint);
 router.get("/", authenticateToken, getComplaints);
 router.get("/:id", authenticateToken, getComplaintById);
+
+router.patch(
+  "/:id/verification",
+  authenticateToken,
+  authorizeRoles("citizen"),
+  verifyComplaint
+);
 
 router.patch(
   "/:id/status",
