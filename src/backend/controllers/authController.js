@@ -5,6 +5,7 @@ const pool = require("../utils/db");
 
 const register = async (req, res) => {
   try {
+    console.log("REGISTER BODY:", req.body);
     const { name, email, phone, password } = req.body;
 
     if (!name || !email || !password) {
@@ -41,7 +42,7 @@ const register = async (req, res) => {
       user: result.rows[0]
     });
   } catch (error) {
-    console.error("Registration error:", error.message);
+    console.error("Registration error:", error);
 
     res.status(500).json({
       success: false,

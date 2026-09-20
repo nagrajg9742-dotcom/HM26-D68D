@@ -2380,3 +2380,418 @@ footer {
         padding: 25px 20px;
     }
 }
+
+
+/* =========================================
+   MY COMPLAINTS PAGE
+   ========================================= */
+
+.complaints-page {
+    min-height: calc(100vh - 150px);
+    padding: 50px 8%;
+    background: #f7f8fa;
+}
+
+.complaints-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.complaints-header p {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.complaints-header h1 {
+    font-size: 34px;
+    margin: 0 0 10px;
+}
+
+.complaints-header span {
+    color: #666;
+    font-size: 16px;
+}
+
+
+/* Main card */
+
+.complaints-card {
+    max-width: 900px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Loading / empty message */
+
+#complaintsMessage {
+    text-align: center;
+    color: #666;
+    font-size: 16px;
+    padding: 20px;
+}
+
+
+/* Individual complaint */
+
+.complaint-item {
+    border: 1px solid #e4e4e4;
+    border-radius: 14px;
+    padding: 22px;
+    margin-bottom: 18px;
+    background: #fafafa;
+    transition: 0.2s ease;
+}
+
+.complaint-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.07);
+}
+
+
+/* Complaint title */
+
+.complaint-item h2 {
+    margin: 0 0 15px;
+    font-size: 21px;
+}
+
+
+/* Complaint details */
+
+.complaint-item p {
+    margin: 9px 0;
+    color: #555;
+    line-height: 1.5;
+}
+
+.complaint-item strong {
+    color: #222;
+}
+
+
+/* Status */
+
+.complaint-item p:nth-of-type(3) {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 7px 14px;
+    border-radius: 20px;
+    background: #fff3cd;
+    color: #856404;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+
+    .complaints-page {
+        padding: 35px 15px;
+    }
+
+    .complaints-header h1 {
+        font-size: 27px;
+    }
+
+    .complaints-card {
+        padding: 18px;
+    }
+
+    .complaint-item {
+        padding: 18px;
+    }
+
+    .complaint-item h2 {
+        font-size: 19px;
+    }
+}
+
+/* =========================================
+   COMPLAINT TRACKING PAGE
+   ========================================= */
+
+.tracking-page {
+    min-height: calc(100vh - 150px);
+    padding: 50px 8%;
+    background: #f7f8fa;
+}
+
+.tracking-header {
+    text-align: center;
+    margin-bottom: 35px;
+}
+
+.tracking-header .section-tag {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #555;
+}
+
+.tracking-header h1 {
+    font-size: 36px;
+    margin: 10px 0;
+}
+
+.tracking-header p {
+    color: #666;
+    font-size: 16px;
+}
+
+
+/* Search Card */
+
+.tracking-search-card {
+    max-width: 800px;
+    margin: 0 auto 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.tracking-search-card h2 {
+    margin-top: 0;
+}
+
+.tracking-search-card p {
+    color: #666;
+}
+
+.tracking-search {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.tracking-search input {
+    flex: 1;
+    padding: 13px 15px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+.tracking-search button {
+    padding: 13px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+
+/* Complaint Details */
+
+.complaint-details {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+}
+
+.complaint-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+}
+
+.detail-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: #777;
+}
+
+.complaint-title-row h2 {
+    margin: 8px 0 0;
+}
+
+
+/* Status */
+
+.status-badge {
+    padding: 8px 15px;
+    border-radius: 20px;
+    background: #fff3cd;
+    color: #856404;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+
+/* Info Cards */
+
+.tracking-info-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 25px 0;
+}
+
+.tracking-info-card {
+    padding: 18px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fafafa;
+}
+
+.tracking-info-card span {
+    display: block;
+    font-size: 13px;
+    color: #777;
+    margin-bottom: 8px;
+}
+
+.tracking-info-card strong {
+    color: #222;
+    word-break: break-word;
+}
+
+
+/* Timeline */
+
+.timeline-section {
+    margin-top: 35px;
+}
+
+.timeline-section h2 {
+    margin-bottom: 5px;
+}
+
+.section-description {
+    color: #666;
+}
+
+.timeline {
+    margin-top: 25px;
+}
+
+.timeline-item {
+    display: flex;
+    gap: 15px;
+    padding-bottom: 25px;
+}
+
+.timeline-dot {
+    min-width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+    font-weight: bold;
+}
+
+.timeline-item.completed .timeline-dot,
+.timeline-item.current .timeline-dot {
+    background: #222;
+    color: white;
+}
+
+.timeline-content h3 {
+    margin: 0 0 5px;
+}
+
+.timeline-content p {
+    margin: 0 0 5px;
+    color: #666;
+}
+
+.timeline-content span {
+    font-size: 13px;
+    color: #777;
+}
+
+
+/* Health Section */
+
+.health-section {
+    margin-top: 35px;
+    padding-top: 25px;
+    border-top: 1px solid #eee;
+}
+
+.health-header {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.health-header h2 {
+    margin: 8px 0;
+}
+
+.health-header p {
+    color: #666;
+}
+
+.health-status {
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.health-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.health-card {
+    padding: 18px;
+    border: 1px solid #eee;
+    border-radius: 12px;
+    background: #fafafa;
+}
+
+.health-card span {
+    display: block;
+    color: #777;
+    font-size: 13px;
+    margin-bottom: 8px;
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+
+    .tracking-page {
+        padding: 35px 15px;
+    }
+
+    .tracking-search {
+        flex-direction: column;
+    }
+
+    .tracking-search button {
+        width: 100%;
+    }
+
+    .tracking-info-grid,
+    .health-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .complaint-title-row,
+    .health-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
