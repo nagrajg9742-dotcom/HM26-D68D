@@ -1,104 +1,230 @@
-# `<Project Name>` — `<one-line tagline>`
+# CivicTrack
 
-> HackMysuru 1.0 · Phase 1 · Civic Governance & Clean Mysuru
-> Team `<Team Name>` (`<Team ID>`)
+CivicTrack is a civic complaint tracking and follow-through platform designed for Mysuru. It helps citizens report civic issues and helps officers track, prioritize, act on, and resolve complaints.
 
-| 📎 Submission links | 📋 Templates | 🏗️ Architecture | 🛡️ Hard constraints | ⚙️ Setup | 🤖 AI usage | ⚠️ Limitations |
-|---|---|---|---|---|---|---|
-| [resource.md](./resource.md) | [resource-templates/](./resource-templates/) | [docs/architecture.md](./docs/architecture.md) | [docs/constraints.md](./docs/constraints.md) | [docs/setup.md](./docs/setup.md) | [ai.md](./ai.md) | [docs/limitations.md](./docs/limitations.md) |
+## 1. Problem Understanding & Sub-problem
 
-<!--
-This README is the overview. Detailed content lives in the linked files so each stays short.
-Keep the section ORDER below. Reviewers look for each section in the same place in every repo.
--->
+### Problem
+
+Civic complaints can remain unresolved for long periods after they are reported. Citizens may not know whether anyone has acted on their complaint, while officers need better visibility into complaints that are becoming overdue or at risk of being forgotten.
+
+### Selected Sub-problem
+
+**Follow-through**
+
+CivicTrack tracks complaints after they are filed, including their status, activity, assignment, and history.
+
+The system also uses a rule-based risk score to identify complaints that may require attention before they are forgotten.
 
 ---
-
-## 1. Problem Understanding
-
-<!-- Which sub-problem did you pick and WHY that one? 5–8 sentences. -->
-
-**Chosen sub-problem:** `<e.g. Routing>`
-
-- **The gap we saw:** `<What actually goes wrong today, in Mysuru terms>`
-- **Why it matters:** `<Consequence: delay, bounced complaints, lost trust, health risk>`
-- **Why we chose this over the others:** `<Your reasoning>`
-- **What "solved" looks like for us:** `<A measurable outcome, e.g. "a citizen never has to pick an office">`
 
 ## 2. Target Users & Mysuru Context
 
-| User | Their situation | What they need from us |
-|---|---|---|
-| `<Resident in a ward at the MCC–panchayat edge>` | `<No idea which office owns the drain; patchy 4G>` | `<Report once, see who owns it, see status>` |
-| `<Panchayat / MCC officer>` | `<...>` | `<...>` |
-| `<Sanitation / field worker>` | `<Basic Android phone, low data>` | `<...>` |
+### Target Users
 
-**Local context we designed for:** `<jurisdiction overlap, connectivity, Kannada/English, device types, literacy>`
+* **Citizens** — report civic issues and track complaint progress.
+* **Officers** — view, manage, assign, update, and resolve complaints.
+* **Administrators** — manage users, departments, assignments, and system-level information.
 
-## 3. Solution Overview
+### Mysuru Context
 
-<!-- Plain language. A non-engineer should follow this. -->
+The platform is designed for civic issues that can occur across Mysuru, including:
 
-`<2–4 sentence summary>`
+* Garbage-related problems
+* Broken streetlights
+* Potholes
+* Blocked drains
+* Other civic complaints
 
-**Core flow:**
-1. `<Citizen does X>`
-2. `<System does Y>`
-3. `<Staff does Z>`
-4. `<Citizen sees outcome>`
-
-**Screenshots:** `<2–4 images under docs/images/, each < 1 MB>`
-
-## 4. Architecture
-
-`<One-sentence summary, e.g. "Offline-first PWA → REST API → PostgreSQL/PostGIS, with a rules-based routing service.">`
-
-➡️ Diagram, components, data model and APIs: **[docs/architecture.md](./docs/architecture.md)**
-
-## 5. Tech Stack & AI Usage
-
-**Stack:** `<React PWA · FastAPI · PostgreSQL + PostGIS · Render>` (full rationale in [docs/architecture.md](./docs/architecture.md#tech-stack))
-
-**AI tools used in development:** `<ChatGPT, Copilot, ...>`
-**AI inside the product:** `<e.g. YOLOv8 for bin detection / none>`
-
-➡️ Full disclosure: **[ai.md](./ai.md)**
-
-## 6. Decision Log (Summary)
-
-<!-- The full 1-page Decision Log is a PDF on Google Drive, linked in resource.md. ≤ 3 lines here. -->
-
-- **Chose:** `<approach>`, **over:** `<rejected alternative>`
-- **Because:** `<the trade-off in one line>`
-- **First thing to break at city scale:** `<one line>`
-
-➡️ Full decision log: **[resource.md](./resource.md#4-submission-artifacts-google-drive)** · Template: **[decision-log-template.md](./resource-templates/decision-log-template.md)**
-
-## 7. Setup & Run
-
-```bash
-git clone <repo-url> && cd <repo>
-<one-line install> && <one-line run>
-```
-
-➡️ Prerequisites, environment variables, seed data and offline testing: **[docs/setup.md](./docs/setup.md)**
-
-## 8. Known Limitations
-
-- `<Top limitation 1>`
-- `<Top limitation 2>`
-- `<Top limitation 3>`
-
-➡️ Full list, edge cases and scaling roadmap: **[docs/limitations.md](./docs/limitations.md)**
+The system is designed with city-scale usage in mind, including periods of increased complaint activity.
 
 ---
 
-## Team
+## 3. Solution Overview & Core Journey
 
-| Name | Role | GitHub |
-|---|---|---|
-| `<...>` | `<...>` | `@<...>` |
+CivicTrack follows a simple complaint journey:
 
-## License
+**Citizen → Complaint → Validation → Risk Checking → Officer Action → Status Tracking → Resolution**
 
-`<MIT / Apache-2.0 / None>`. You retain full ownership of your code.
+### Core Flow
+
+1. A citizen submits a complaint.
+2. The backend validates the complaint information.
+3. The system checks for possible duplicate complaints.
+4. Invalid locations and inappropriate complaint text are rejected.
+5. The complaint is stored in PostgreSQL.
+6. A rule-based risk score helps identify complaints that may require attention.
+7. Officers can view and manage complaints.
+8. Complaint status changes are recorded in status history.
+9. Evidence and notifications can support the follow-through process.
+10. The citizen can track the complaint until resolution.
+
+CivicTrack does not just collect complaints. **It follows them until action is taken.**
+
+---
+
+## 4. Architecture
+
+CivicTrack uses a frontend → REST API → Express backend → PostgreSQL architecture.
+
+### Main Components
+
+* Citizen and officer frontend
+* REST API
+* Express.js backend
+* Authentication and role-based access
+* Complaint management
+* Assignment management
+* Risk scoring
+* SLA tracking
+* Evidence management
+* Notifications
+* PostgreSQL database
+
+The detailed architecture, components, data model, and APIs are documented here:
+
+**[View Architecture Documentation](docs/architecture.md)**
+
+---
+
+## 5. Tech Stack & AI Usage
+
+### Technology Stack
+
+* **Frontend:** HTML, CSS, JavaScript
+* **Backend:** Node.js, Express.js
+* **Database:** PostgreSQL
+* **Authentication:** JWT
+* **Password Security:** bcryptjs
+* **File Uploads:** Multer
+* **API:** REST API
+* **Version Control:** Git and GitHub
+
+### AI Usage
+
+AI tools were used during development for assistance with understanding, debugging, documentation, and improving implementation.
+
+The current complaint risk mechanism is **rule-based**, not a machine-learning model. The rules are designed to make the risk decision explainable and testable.
+
+Detailed AI usage disclosure:
+
+**[View AI Usage Disclosure](ai.md)**
+
+---
+
+## 6. Decision Log Summary
+
+Key technical decisions include:
+
+* Node.js + Express.js for the backend REST API.
+* PostgreSQL for structured civic complaint data.
+* Rule-based risk scoring for explainable complaint risk detection.
+* Duplicate complaint detection using category, title, location, and time.
+* Input validation for invalid locations and inappropriate text.
+* JWT authentication and role-based access control.
+* Complaint status history for tracking follow-through.
+* Evidence and notifications to support complaint management.
+* Modular backend structure for easier maintenance and future scaling.
+
+**[View the Complete Decision Log](resource-templates/decision-log.md)**
+
+---
+
+## 7. Setup & Run
+
+### Backend Setup
+
+Clone the repository and install the backend dependencies:
+
+```bash
+cd src/backend
+npm install
+```
+
+Configure the required environment variables in `.env`.
+
+Do not commit `.env` or any database passwords, JWT secrets, or other credentials to GitHub.
+
+Start the backend:
+
+```bash
+node server.js
+```
+
+The backend runs on:
+
+```text
+http://localhost:5000
+```
+
+### API Base URL
+
+```text
+http://localhost:5000/api
+```
+
+### Database
+
+CivicTrack uses PostgreSQL.
+
+The database schema is available at:
+
+```text
+src/database/schema.sql
+```
+
+### Offline Testing
+
+The frontend can queue supported actions when the network is unavailable and synchronize them after the connection is restored.
+
+For detailed setup, environment variables, and testing instructions:
+
+**[View Setup Documentation](docs/setup.md)**
+
+---
+
+## 8. Known Limitations & Roadmap
+
+### Current Limitations
+
+* The risk system is rule-based rather than trained machine learning.
+* Duplicate detection can sometimes identify similar complaints as possible duplicates.
+* Location validation checks valid latitude and longitude ranges but does not currently enforce a precise Mysuru city boundary.
+* Offline synchronization depends on the frontend implementation and successful reconnection.
+* Large-scale deployment would require additional infrastructure and performance optimization.
+
+### Future Roadmap
+
+* Improve risk prediction using historical complaint data.
+* Add stronger location/geofencing support.
+* Improve duplicate detection.
+* Add more advanced analytics and dashboards.
+* Add background processing for notifications and SLA monitoring.
+* Improve scalability for large numbers of simultaneous users.
+* Add multilingual citizen support.
+
+For more details:
+
+**[View Limitations & Roadmap](docs/limitations.md)**
+
+---
+
+## Project Documentation
+
+| Document                                           | Description                                           |
+| -------------------------------------------------- | ----------------------------------------------------- |
+| [Architecture](docs/architecture.md)               | System architecture, components, data model, and APIs |
+| [Constraints](docs/constraints.md)                 | Approach to the required hard constraints             |
+| [Limitations](docs/limitations.md)                 | Known limitations and future roadmap                  |
+| [Setup](docs/setup.md)                             | Local setup, environment variables, and testing       |
+| [AI Usage](ai.md)                                  | AI-assisted development and runtime AI disclosure     |
+| [Decision Log](resource-templates/decision-log.md) | Important technical decisions and trade-offs          |
+| [Resource](resource.md)                            | Central project links and submission resources        |
+
+## Repository
+
+GitHub repository:
+
+https://github.com/nagrajg9742-dotcom/HM26-D68D.git
+
+## Security

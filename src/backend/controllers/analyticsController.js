@@ -51,6 +51,11 @@ const getOfficerDashboard = async (req, res) => {
   try {
     const officerId = req.user.id;
 
+    const totalResult = await pool.query(
+      `SELECT COUNT(*) AS count
+       FROM complaints`
+    );
+
     const assignedResult = await pool.query(
       `SELECT COUNT(*) AS count
        FROM complaint_assignments
@@ -82,6 +87,12 @@ const getOfficerDashboard = async (req, res) => {
       [officerId]
     );
 
+    const highRiskResult = await pool.query(
+      `SELECT COUNT(*) AS count
+       FROM complaints
+       WHERE priority IN ('high', 'critical')`
+    );
+
     const rescueResult = await pool.query(
       `SELECT COUNT(*) AS count
        FROM escalations e
@@ -93,13 +104,36 @@ const getOfficerDashboard = async (req, res) => {
       [officerId]
     );
 
+    const resolvedResult = await pool.query(
+      `SELECT COUNT(*) AS count
+       FROM complaints
+       WHERE status = 'resolved'`
+    );
+
+    const reopenedResult = await pool.query(
+      `SELECT COUNT(*) AS count
+       FROM complaints
+       WHERE status = 'reopened'`
+    );
+
+    const verifiedResult = await pool.query(
+      `SELECT COUNT(*) AS count
+       FROM complaints
+       WHERE status = 'verified'`
+    );
+
     res.json({
       success: true,
       dashboard: {
+        total_complaints: Number(totalResult.rows[0].count),
         assigned_complaints: Number(assignedResult.rows[0].count),
         open_complaints: Number(openResult.rows[0].count),
         overdue_complaints: Number(overdueResult.rows[0].count),
-        active_rescue_cases: Number(rescueResult.rows[0].count)
+        high_risk_complaints: Number(highRiskResult.rows[0].count),
+        active_rescue_cases: Number(rescueResult.rows[0].count),
+        resolved_complaints: Number(resolvedResult.rows[0].count),
+        reopened_complaints: Number(reopenedResult.rows[0].count),
+        verified_complaints: Number(verifiedResult.rows[0].count)
       }
     });
   } catch (error) {
