@@ -869,6 +869,26 @@ function setDashboardValue(
 }
 
 
+/*
+ * UPDATED DASHBOARD
+ *
+ * Uses the backend dashboard endpoint:
+ *
+ * GET /api/analytics/dashboard
+ *
+ * The backend now returns all 9 dashboard values:
+ *
+ * total_complaints
+ * assigned_complaints
+ * open_complaints
+ * overdue_complaints
+ * high_risk_complaints
+ * active_rescue_cases
+ * resolved_complaints
+ * reopened_complaints
+ * verified_complaints
+ */
+
 async function loadDashboard() {
 
     const totalElement =
@@ -888,50 +908,6 @@ async function loadDashboard() {
     }
 
     try {
-
-        /* ---------------------------------------------
-           GENERAL ANALYTICS
-           --------------------------------------------- */
-
-        const analyticsResponse =
-            await authenticatedFetch(
-                `${API_BASE_URL}/analytics`
-            );
-
-        if (!analyticsResponse) {
-            return;
-        }
-
-        if (
-            handleUnauthorized(
-                analyticsResponse
-            )
-        ) {
-            return;
-        }
-
-        const analyticsData =
-            await parseResponse(
-                analyticsResponse
-            );
-
-        if (
-            !analyticsResponse.ok ||
-            !analyticsData.analytics
-        ) {
-
-            throw new Error(
-                analyticsData.message ||
-                "Unable to load analytics."
-            );
-        }
-
-        setDashboardValue(
-            "totalComplaints",
-            analyticsData.analytics
-                .total_complaints ?? 0
-        );
-
 
         /* ---------------------------------------------
            OFFICER DASHBOARD
@@ -973,118 +949,54 @@ async function loadDashboard() {
         const dashboard =
             dashboardData.dashboard;
 
+
+        /* ---------------------------------------------
+           DASHBOARD COUNTS
+           --------------------------------------------- */
+
+        setDashboardValue(
+            "totalComplaints",
+            dashboard.total_complaints ?? 0
+        );
+
         setDashboardValue(
             "assignedComplaints",
-            dashboard.assigned_complaints ??
-                0
+            dashboard.assigned_complaints ?? 0
         );
 
         setDashboardValue(
             "openComplaints",
-            dashboard.open_complaints ??
-                0
+            dashboard.open_complaints ?? 0
         );
 
         setDashboardValue(
             "overdueComplaints",
-            dashboard.overdue_complaints ??
-                0
+            dashboard.overdue_complaints ?? 0
+        );
+
+        setDashboardValue(
+            "highRiskComplaints",
+            dashboard.high_risk_complaints ?? 0
         );
 
         setDashboardValue(
             "rescueComplaints",
-            dashboard.active_rescue_cases ??
-                0
+            dashboard.active_rescue_cases ?? 0
         );
-
-
-        /* ---------------------------------------------
-           COMPLAINT STATUS COUNTS
-           --------------------------------------------- */
-
-        const complaintsResponse =
-            await authenticatedFetch(
-                `${API_BASE_URL}/complaints`
-            );
-
-        if (!complaintsResponse) {
-            return;
-        }
-
-        if (
-            handleUnauthorized(
-                complaintsResponse
-            )
-        ) {
-            return;
-        }
-
-        const complaintsData =
-            await parseResponse(
-                complaintsResponse
-            );
-
-        if (!complaintsResponse.ok) {
-
-            throw new Error(
-                complaintsData.message ||
-                "Unable to load complaints."
-            );
-        }
-
-        const complaints =
-            Array.isArray(
-                complaintsData.complaints
-            )
-                ? complaintsData.complaints
-                : [];
-
-
-        const resolved =
-            complaints.filter(
-                complaint =>
-                    complaint.status ===
-                    "resolved"
-            ).length;
-
-        const reopened =
-            complaints.filter(
-                complaint =>
-                    complaint.status ===
-                    "reopened"
-            ).length;
-
-        const verified =
-            complaints.filter(
-                complaint =>
-                    complaint.status ===
-                    "verified"
-            ).length;
-
 
         setDashboardValue(
             "resolvedComplaints",
-            resolved
+            dashboard.resolved_complaints ?? 0
         );
 
         setDashboardValue(
             "reopenedComplaints",
-            reopened
+            dashboard.reopened_complaints ?? 0
         );
 
         setDashboardValue(
             "verifiedComplaints",
-            verified
-        );
-
-
-        /* ---------------------------------------------
-           HIGH-RISK COUNT
-           Uses the new risk API.
-           --------------------------------------------- */
-
-        await loadHighRiskCount(
-            complaints
+            dashboard.verified_complaints ?? 0
         );
 
     } catch (error) {
@@ -1115,6 +1027,11 @@ async function loadDashboard() {
         );
 
         setDashboardValue(
+            "highRiskComplaints",
+            "Unavailable"
+        );
+
+        setDashboardValue(
             "rescueComplaints",
             "Unavailable"
         );
@@ -1133,104 +1050,7 @@ async function loadDashboard() {
             "verifiedComplaints",
             "Unavailable"
         );
-
-        setDashboardValue(
-            "highRiskComplaints",
-            "Unavailable"
-        );
     }
-}
-
-
-async function loadHighRiskCount(
-    complaints
-) {
-
-    const element =
-        document.getElementById(
-            "highRiskComplaints"
-        );
-
-    if (!element) {
-        return;
-    }
-
-    if (
-        complaints.length === 0
-    ) {
-
-        element.textContent =
-            "0";
-
-        return;
-    }
-
-    const results =
-        await Promise.all(
-            complaints.map(
-                async complaint => {
-
-                    try {
-
-                        const response =
-                            await authenticatedFetch(
-                                `${API_BASE_URL}/intelligence/${complaint.id}/risk`
-                            );
-
-                        if (!response) {
-                            return null;
-                        }
-
-                        if (
-                            response.status ===
-                            401
-                        ) {
-
-                            handleUnauthorized(
-                                response
-                            );
-
-                            return null;
-                        }
-
-                        const data =
-                            await parseResponse(
-                                response
-                            );
-
-                        if (
-                            !response.ok
-                        ) {
-                            return null;
-                        }
-
-                        return data;
-
-                    } catch (error) {
-
-                        console.error(
-                            `Risk request failed for complaint ${complaint.id}:`,
-                            error
-                        );
-
-                        return null;
-                    }
-                }
-            )
-        );
-
-
-    const highRiskCount =
-        results.filter(
-            result =>
-                result &&
-                result.success &&
-                result.risk_level ===
-                    "high"
-        ).length;
-
-    element.textContent =
-        highRiskCount;
 }
 
 
@@ -1432,11 +1252,6 @@ async function loadComplaintDetails() {
         );
 
 
-        /*
-         * These old fields are not currently supplied
-         * by the complaint details response.
-         */
-
         setDetailValue(
             "assignedDepartment",
             "Not available"
@@ -1474,7 +1289,7 @@ async function loadComplaintDetails() {
 
 
         /* ---------------------------------------------
-           LOAD NEW RISK INTELLIGENCE
+           LOAD RISK INTELLIGENCE
            --------------------------------------------- */
 
         await loadRiskPrediction(
