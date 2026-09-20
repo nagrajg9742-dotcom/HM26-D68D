@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Notifications | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+
+        <div class="logo">
+            CivicTrack
+        </div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="report.html">Report</a>
+            <a href="tracking.html">Track</a>
+            <a href="complaints.html">My Complaints</a>
+            <a href="notifications.html" class="active">Notifications</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Notifications -->
+    <main class="notifications-page">
+
+        <section class="notifications-header">
+
+            <span class="section-tag">
+                UPDATES
+            </span>
+
+            <h1>Notifications</h1>
+
+            <p>
+                Stay updated about your complaints and important
+                actions that need your attention.
+            </p>
+
+        </section>
+
+
+        <section class="notifications-card">
+
+            <div class="notifications-card-header">
+
+                <div>
+                    <h2>Your Notifications</h2>
+
+                    <p>
+                        Important updates about your complaints will
+                        appear here.
+                    </p>
+                </div>
+
+                <button
+                    id="markAllReadBtn"
+                    class="mark-read-btn"
+                >
+                    Mark all as read
+                </button>
+
+            </div>
+
+
+            <!-- Empty State -->
+
+            <div
+                id="notificationEmpty"
+                class="notification-empty"
+            >
+
+                <div class="notification-icon">
+                    🔔
+                </div>
+
+                <h3>No notifications yet</h3>
+
+                <p>
+                    When there is an update to one of your complaints,
+                    you'll see it here.
+                </p>
+
+            </div>
+
+
+            <!-- Notification List -->
+
+            <div
+                id="notificationList"
+                class="notification-list"
+            >
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div>
+            <h3>CivicTrack</h3>
+
+            <p>
+                Helping citizens build a better Mysuru.
+            </p>
+        </div>
+
+        <p>
+            © 2026 CivicTrack
+        </p>
+
+    </footer>
+
+
+    <script src="../js/notifications.js"></script>
+
+</body>
+
+</html>

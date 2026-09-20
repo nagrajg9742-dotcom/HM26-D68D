@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Complaint | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">CivicTrack</div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="report.html">Report</a>
+            <a href="tracking.html" class="active">Track</a>
+            <a href="complaints.html">My Complaints</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+    </header>
+
+
+    <!-- Tracking Page -->
+    <main class="tracking-page">
+
+        <section class="tracking-header">
+            <span class="section-tag">COMPLAINT TRACKING</span>
+
+            <h1>Track Your Complaint</h1>
+
+            <p>
+                Follow the progress of your complaint and stay informed
+                about every important update.
+            </p>
+        </section>
+
+
+        <!-- Complaint Search -->
+        <section class="tracking-search-card">
+
+            <h2>Find Your Complaint</h2>
+
+            <p>
+                Enter your complaint ID to view its current status.
+            </p>
+
+            <div class="tracking-search">
+                <input
+                    type="text"
+                    id="complaintId"
+                    placeholder="Enter complaint ID"
+                >
+
+                <button id="trackBtn">
+                    Track Complaint
+                </button>
+            </div>
+
+            <p id="trackingMessage" class="form-message"></p>
+
+        </section>
+
+
+        <!-- Complaint Details -->
+        <section id="complaintDetails" class="complaint-details">
+
+            <div class="complaint-title-row">
+
+                <div>
+                    <span class="detail-label">COMPLAINT ID</span>
+                    <h2 id="displayComplaintId">—</h2>
+                </div>
+
+                <span id="complaintStatus" class="status-badge">
+                    In Progress
+                </span>
+
+            </div>
+
+
+            <!-- Basic Details -->
+            <div class="tracking-info-grid">
+
+                <div class="tracking-info-card">
+                    <span>Category</span>
+                    <strong id="displayCategory">—</strong>
+                </div>
+
+                <div class="tracking-info-card">
+                    <span>Location</span>
+                    <strong id="displayLocation">—</strong>
+                </div>
+
+                <div class="tracking-info-card">
+                    <span>Submitted</span>
+                    <strong id="displayDate">—</strong>
+                </div>
+
+            </div>
+
+
+            <!-- Timeline -->
+            <div class="timeline-section">
+
+                <h2>Complaint Timeline</h2>
+
+                <p class="section-description">
+                    See how your complaint moves through the resolution process.
+                </p>
+
+
+                <div class="timeline">
+
+                    <div class="timeline-item completed">
+
+                        <div class="timeline-dot">✓</div>
+
+                        <div class="timeline-content">
+                            <h3>Complaint Submitted</h3>
+                            <p>
+                                Your complaint was successfully submitted.
+                            </p>
+                            <span>Submitted</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item completed">
+
+                        <div class="timeline-dot">✓</div>
+
+                        <div class="timeline-content">
+                            <h3>Complaint Assigned</h3>
+                            <p>
+                                The complaint has been assigned to the
+                                concerned department.
+                            </p>
+                            <span>Assigned</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item current">
+
+                        <div class="timeline-dot">●</div>
+
+                        <div class="timeline-content">
+                            <h3>Officer Working</h3>
+                            <p>
+                                The concerned officer is currently working
+                                on the complaint.
+                            </p>
+                            <span>In Progress</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">4</div>
+
+                        <div class="timeline-content">
+                            <h3>Resolution Submitted</h3>
+                            <p>
+                                Resolution proof will be added by the officer.
+                            </p>
+                            <span>Waiting</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">5</div>
+
+                        <div class="timeline-content">
+                            <h3>Citizen Verification</h3>
+                            <p>
+                                You will be able to verify whether the issue
+                                has been resolved.
+                            </p>
+                            <span>Waiting</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Health / Risk -->
+            <div class="health-section">
+
+                <div class="health-header">
+
+                    <div>
+                        <span class="section-tag">COMPLAINT HEALTH</span>
+
+                        <h2>Resolution Health</h2>
+
+                        <p>
+                            A simple overview of whether your complaint
+                            is progressing within the expected time.
+                        </p>
+                    </div>
+
+                    <div class="health-status">
+                        <span>●</span>
+                        <strong>On Track</strong>
+                    </div>
+
+                </div>
+
+
+                <div class="health-grid">
+
+                    <div class="health-card">
+                        <span>Response Status</span>
+                        <strong>Within Expected Time</strong>
+                    </div>
+
+                    <div class="health-card">
+                        <span>Risk Level</span>
+                        <strong>Low</strong>
+                    </div>
+
+                    <div class="health-card">
+                        <span>Last Updated</span>
+                        <strong>Recently</strong>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <div>
+            <h3>CivicTrack</h3>
+            <p>
+                Helping citizens build a better Mysuru.
+            </p>
+        </div>
+
+        <p>© 2026 CivicTrack</p>
+
+    </footer>
+
+
+    <script src="../js/tracking.js"></script>
+
+</body>
+
+</html>
