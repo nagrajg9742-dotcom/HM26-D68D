@@ -115,6 +115,56 @@ const citizen_id = req.user.id;
   }
 };
 
+const getComplaintById = async (req, res) => {
+  try {
+    const complaintId = req.params.id;
+
+    const result = await pool.query(
+      `SELECT
+         c.*,
+         u.name AS citizen_name,
+         u.email AS citizen_email
+       FROM complaints c
+       JOIN users u ON c.citizen_id = u.id
+       WHERE c.id = $1`,
+      [complaintId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Complaint not found"
+      });
+    }
+
+    const complaint = result.rows[0];
+
+    // Citizens can view only their own complaints
+    if (
+      req.user.role === "citizen" &&
+      complaint.citizen_id !== req.user.id
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "You are not authorized to view this complaint"
+      });
+    }
+
+    res.json({
+      success: true,
+      complaint: complaint
+    });
+
+  } catch (error) {
+    console.error("Get complaint by ID error:", error.message);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error"
+    });
+  }
+};
+
 const updateComplaintStatus = async (req, res) => {
   try {
     const { status, note } = req.body;
@@ -213,5 +263,6 @@ await pool.query(
 module.exports = {
   createComplaint,
   getComplaints,
-   updateComplaintStatus
+  getComplaintById,
+  updateComplaintStatus
 };
