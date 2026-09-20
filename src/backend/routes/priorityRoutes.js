@@ -1,9 +1,8 @@
 const express = require("express");
 
 const {
-  getAnalytics,
-  getOfficerDashboard
-} = require("../controllers/analyticsController");
+  getPriorityQueue
+} = require("../controllers/priorityController");
 
 const {
   authenticateToken,
@@ -16,14 +15,7 @@ router.get(
   "/",
   authenticateToken,
   authorizeRoles("officer", "admin"),
-  getAnalytics
-);
-
-router.get(
-  "/dashboard",
-  authenticateToken,
-  authorizeRoles("officer", "admin"),
-  getOfficerDashboard
+  getPriorityQueue
 );
 
 module.exports = router;

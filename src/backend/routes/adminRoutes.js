@@ -1,9 +1,9 @@
 const express = require("express");
 
 const {
-  getAnalytics,
-  getOfficerDashboard
-} = require("../controllers/analyticsController");
+  getUsers,
+  updateUserRole
+} = require("../controllers/adminUserController");
 
 const {
   authenticateToken,
@@ -13,17 +13,17 @@ const {
 const router = express.Router();
 
 router.get(
-  "/",
+  "/users",
   authenticateToken,
-  authorizeRoles("officer", "admin"),
-  getAnalytics
+  authorizeRoles("admin"),
+  getUsers
 );
 
-router.get(
-  "/dashboard",
+router.patch(
+  "/users/:id/role",
   authenticateToken,
-  authorizeRoles("officer", "admin"),
-  getOfficerDashboard
+  authorizeRoles("admin"),
+  updateUserRole
 );
 
 module.exports = router;

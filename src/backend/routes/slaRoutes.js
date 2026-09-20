@@ -1,9 +1,9 @@
 const express = require("express");
 
 const {
-  getAnalytics,
-  getOfficerDashboard
-} = require("../controllers/analyticsController");
+  setSlaDeadline,
+  getOverdueComplaints
+} = require("../controllers/slaController");
 
 const {
   authenticateToken,
@@ -12,18 +12,18 @@ const {
 
 const router = express.Router();
 
-router.get(
-  "/",
+router.patch(
+  "/:id",
   authenticateToken,
   authorizeRoles("officer", "admin"),
-  getAnalytics
+  setSlaDeadline
 );
 
 router.get(
-  "/dashboard",
+  "/overdue",
   authenticateToken,
   authorizeRoles("officer", "admin"),
-  getOfficerDashboard
+  getOverdueComplaints
 );
 
 module.exports = router;

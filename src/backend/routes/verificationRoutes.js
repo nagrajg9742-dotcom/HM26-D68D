@@ -1,9 +1,9 @@
 const express = require("express");
 
 const {
-  getAnalytics,
-  getOfficerDashboard
-} = require("../controllers/analyticsController");
+  createVerificationRequest,
+  respondToVerificationRequest
+} = require("../controllers/verificationController");
 
 const {
   authenticateToken,
@@ -12,18 +12,17 @@ const {
 
 const router = express.Router();
 
-router.get(
-  "/",
+router.post(
+  "/:id/verification",
   authenticateToken,
-  authorizeRoles("officer", "admin"),
-  getAnalytics
+  createVerificationRequest
 );
 
-router.get(
-  "/dashboard",
+router.patch(
+  "/:id/verification",
   authenticateToken,
   authorizeRoles("officer", "admin"),
-  getOfficerDashboard
+  respondToVerificationRequest
 );
 
 module.exports = router;

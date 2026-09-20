@@ -1,9 +1,9 @@
 const express = require("express");
 
 const {
-  getAnalytics,
-  getOfficerDashboard
-} = require("../controllers/analyticsController");
+  getDepartments,
+  createDepartment
+} = require("../controllers/departmentController");
 
 const {
   authenticateToken,
@@ -16,14 +16,14 @@ router.get(
   "/",
   authenticateToken,
   authorizeRoles("officer", "admin"),
-  getAnalytics
+  getDepartments
 );
 
-router.get(
-  "/dashboard",
+router.post(
+  "/",
   authenticateToken,
-  authorizeRoles("officer", "admin"),
-  getOfficerDashboard
+  authorizeRoles("admin"),
+  createDepartment
 );
 
 module.exports = router;
