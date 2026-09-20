@@ -62,3 +62,13 @@ CREATE TABLE IF NOT EXISTS audit_logs (
     details JSONB,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS notifications (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    complaint_id INTEGER REFERENCES complaints(id) ON DELETE CASCADE,
+    title VARCHAR(255),
+    message TEXT,
+    is_read BOOLEAN NOT NULL DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
