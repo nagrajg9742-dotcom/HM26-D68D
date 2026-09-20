@@ -1,18 +1,24 @@
 const pool = require("../utils/db");
 
+// =====================================================
+// CREATE COMPLAINT
+// =====================================================
 const createComplaint = async (req, res) => {
   try {
-   const {
-  title,
-  description,
-  category,
-  latitude,
-  longitude,
-  location_accuracy
-} = req.body;
+    const {
+      title,
+      description,
+      category,
+      latitude,
+      longitude,
+      location_accuracy
+    } = req.body;
 
-const citizen_id = req.user.id;
+    const citizen_id = req.user.id;
 
+    // -------------------------------------------------
+    // 1. REQUIRED FIELD VALIDATION
+    // -------------------------------------------------
     if (
       !citizen_id ||
       !title ||
@@ -27,9 +33,107 @@ const citizen_id = req.user.id;
       });
     }
 
+    // -------------------------------------------------
+    // 2. LOCATION VALIDATION
+    // -------------------------------------------------
+    const lat = Number(latitude);
+    const lng = Number(longitude);
+
+    if (!Number.isFinite(lat) || !Number.isFinite(lng)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid location coordinates"
+      });
+    }
+
+    if (lat < -90 || lat > 90) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid latitude. Latitude must be between -90 and 90."
+      });
+    }
+
+    if (lng < -180 || lng > 180) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid longitude. Longitude must be between -180 and 180."
+      });
+    }
+
+    // -------------------------------------------------
+    // 3. INAPPROPRIATE LANGUAGE CHECK
+    // -------------------------------------------------
+    const blockedWords = [
+      "fuck",
+      "shit",
+      "bitch",
+      "asshole",
+      "idiot",
+      "stupid"
+    ];
+
+    const textToCheck =
+      `${title} ${description}`.toLowerCase();
+
+    const containsBlockedWord = blockedWords.some((word) =>
+      textToCheck.includes(word)
+    );
+
+    if (containsBlockedWord) {
+      return res.status(400).json({
+        success: false,
+        message: "Complaint contains inappropriate language"
+      });
+    }
+
+    // -------------------------------------------------
+    // 4. DUPLICATE COMPLAINT DETECTION
+    // -------------------------------------------------
+    const duplicateResult = await pool.query(
+      `SELECT id, title, created_at
+       FROM complaints
+       WHERE citizen_id = $1
+         AND category = $2
+         AND LOWER(TRIM(title)) = LOWER(TRIM($3))
+         AND latitude IS NOT NULL
+         AND longitude IS NOT NULL
+         AND ABS(latitude - $4) <= 0.005
+         AND ABS(longitude - $5) <= 0.005
+         AND created_at >= CURRENT_TIMESTAMP - INTERVAL '24 hours'
+       ORDER BY created_at DESC
+       LIMIT 1`,
+      [
+        citizen_id,
+        category,
+        title,
+        lat,
+        lng
+      ]
+    );
+
+    if (duplicateResult.rows.length > 0) {
+      return res.status(409).json({
+        success: false,
+        message: "Possible duplicate complaint detected",
+        duplicate_complaint_id: duplicateResult.rows[0].id
+      });
+    }
+
+    // -------------------------------------------------
+    // 5. INSERT COMPLAINT
+    // -------------------------------------------------
     const result = await pool.query(
       `INSERT INTO complaints
-       (citizen_id, title, description, category, latitude, longitude, location_accuracy, location_captured_at)
+       (
+         citizen_id,
+         title,
+         description,
+         category,
+         latitude,
+         longitude,
+         location_accuracy,
+         location_captured_at
+       )
        VALUES ($1, $2, $3, $4, $5, $6, $7, CURRENT_TIMESTAMP)
        RETURNING *`,
       [
@@ -37,17 +141,26 @@ const citizen_id = req.user.id;
         title,
         description,
         category,
-        latitude,
-        longitude,
+        lat,
+        lng,
         location_accuracy || null
       ]
     );
 
     const complaint = result.rows[0];
 
+    // -------------------------------------------------
+    // 6. INITIAL STATUS HISTORY
+    // -------------------------------------------------
     await pool.query(
       `INSERT INTO complaint_status_history
-       (complaint_id, old_status, new_status, changed_by, note)
+       (
+         complaint_id,
+         old_status,
+         new_status,
+         changed_by,
+         note
+       )
        VALUES ($1, $2, $3, $4, $5)`,
       [
         complaint.id,
@@ -58,13 +171,20 @@ const citizen_id = req.user.id;
       ]
     );
 
+    // -------------------------------------------------
+    // 7. SUCCESS RESPONSE
+    // -------------------------------------------------
     res.status(201).json({
       success: true,
       message: "Complaint created successfully",
       complaint
     });
+
   } catch (error) {
-    console.error("Create complaint error:", error.message);
+    console.error(
+      "Create complaint error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -73,30 +193,41 @@ const citizen_id = req.user.id;
   }
 };
 
-  const getComplaints = async (req, res) => {
+
+// =====================================================
+// GET ALL COMPLAINTS
+// =====================================================
+const getComplaints = async (req, res) => {
   try {
     let result;
 
+    // Citizen sees only their complaints
     if (req.user.role === "citizen") {
+
       result = await pool.query(
         `SELECT
            c.*,
            u.name AS citizen_name,
            u.email AS citizen_email
          FROM complaints c
-         JOIN users u ON c.citizen_id = u.id
+         JOIN users u
+           ON c.citizen_id = u.id
          WHERE c.citizen_id = $1
          ORDER BY c.created_at DESC`,
         [req.user.id]
       );
+
     } else {
+
+      // Officers/Admins see all complaints
       result = await pool.query(
         `SELECT
            c.*,
            u.name AS citizen_name,
            u.email AS citizen_email
          FROM complaints c
-         JOIN users u ON c.citizen_id = u.id
+         JOIN users u
+           ON c.citizen_id = u.id
          ORDER BY c.created_at DESC`
       );
     }
@@ -105,8 +236,13 @@ const citizen_id = req.user.id;
       success: true,
       complaints: result.rows
     });
+
   } catch (error) {
-    console.error("Get complaints error:", error.message);
+
+    console.error(
+      "Get complaints error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -115,8 +251,13 @@ const citizen_id = req.user.id;
   }
 };
 
+
+// =====================================================
+// GET COMPLAINT BY ID
+// =====================================================
 const getComplaintById = async (req, res) => {
   try {
+
     const complaintId = req.params.id;
 
     const result = await pool.query(
@@ -125,12 +266,14 @@ const getComplaintById = async (req, res) => {
          u.name AS citizen_name,
          u.email AS citizen_email
        FROM complaints c
-       JOIN users u ON c.citizen_id = u.id
+       JOIN users u
+         ON c.citizen_id = u.id
        WHERE c.id = $1`,
       [complaintId]
     );
 
     if (result.rows.length === 0) {
+
       return res.status(404).json({
         success: false,
         message: "Complaint not found"
@@ -144,6 +287,7 @@ const getComplaintById = async (req, res) => {
       req.user.role === "citizen" &&
       complaint.citizen_id !== req.user.id
     ) {
+
       return res.status(403).json({
         success: false,
         message: "You are not authorized to view this complaint"
@@ -156,7 +300,11 @@ const getComplaintById = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Get complaint by ID error:", error.message);
+
+    console.error(
+      "Get complaint by ID error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -165,10 +313,17 @@ const getComplaintById = async (req, res) => {
   }
 };
 
+
+// =====================================================
+// UPDATE COMPLAINT STATUS
+// =====================================================
 const updateComplaintStatus = async (req, res) => {
   try {
+
     const { status, note } = req.body;
+
     const complaintId = req.params.id;
+
     const changedBy = req.user.id;
 
     const allowedStatuses = [
@@ -181,19 +336,30 @@ const updateComplaintStatus = async (req, res) => {
       "closed"
     ];
 
-    if (!status || !allowedStatuses.includes(status)) {
+    // -------------------------------------------------
+    // STATUS VALIDATION
+    // -------------------------------------------------
+    if (
+      !status ||
+      !allowedStatuses.includes(status)
+    ) {
+
       return res.status(400).json({
         success: false,
         message: "Invalid complaint status"
       });
     }
 
+    // -------------------------------------------------
+    // GET COMPLAINT
+    // -------------------------------------------------
     const complaintResult = await pool.query(
       "SELECT * FROM complaints WHERE id = $1",
       [complaintId]
     );
 
     if (complaintResult.rows.length === 0) {
+
       return res.status(404).json({
         success: false,
         message: "Complaint not found"
@@ -201,40 +367,63 @@ const updateComplaintStatus = async (req, res) => {
     }
 
     const complaint = complaintResult.rows[0];
+
     const oldStatus = complaint.status;
 
-    
-
+    // -------------------------------------------------
+    // UPDATE STATUS
+    // -------------------------------------------------
     const updatedResult = await pool.query(
       `UPDATE complaints
        SET status = $1,
            updated_at = CURRENT_TIMESTAMP
        WHERE id = $2
        RETURNING *`,
-      [status, complaintId]
+      [
+        status,
+        complaintId
+      ]
     );
 
-    const notificationTitle = "Complaint status updated";
+    // -------------------------------------------------
+    // CREATE NOTIFICATION
+    // -------------------------------------------------
+    const notificationTitle =
+      "Complaint status updated";
 
-const notificationMessage =
-  `Your complaint "${complaint.title}" status has been changed from ` +
-  `"${oldStatus}" to "${status}".`;
-
-await pool.query(
-  `INSERT INTO notifications
-   (user_id, complaint_id, title, message)
-   VALUES ($1, $2, $3, $4)`,
-  [
-    complaint.citizen_id,
-    complaint.id,
-    notificationTitle,
-    notificationMessage
-  ]
-);
+    const notificationMessage =
+      `Your complaint "${complaint.title}" status has been changed from ` +
+      `"${oldStatus}" to "${status}".`;
 
     await pool.query(
+      `INSERT INTO notifications
+       (
+         user_id,
+         complaint_id,
+         title,
+         message
+       )
+       VALUES ($1, $2, $3, $4)`,
+      [
+        complaint.citizen_id,
+        complaint.id,
+        notificationTitle,
+        notificationMessage
+      ]
+    );
+
+    // -------------------------------------------------
+    // STATUS HISTORY
+    // -------------------------------------------------
+    await pool.query(
       `INSERT INTO complaint_status_history
-       (complaint_id, old_status, new_status, changed_by, note)
+       (
+         complaint_id,
+         old_status,
+         new_status,
+         changed_by,
+         note
+       )
        VALUES ($1, $2, $3, $4, $5)`,
       [
         complaintId,
@@ -245,13 +434,21 @@ await pool.query(
       ]
     );
 
+    // -------------------------------------------------
+    // SUCCESS RESPONSE
+    // -------------------------------------------------
     res.json({
       success: true,
       message: "Complaint status updated successfully",
       complaint: updatedResult.rows[0]
     });
+
   } catch (error) {
-    console.error("Update complaint status error:", error.message);
+
+    console.error(
+      "Update complaint status error:",
+      error.message
+    );
 
     res.status(500).json({
       success: false,
@@ -260,6 +457,10 @@ await pool.query(
   }
 };
 
+
+// =====================================================
+// EXPORT CONTROLLERS
+// =====================================================
 module.exports = {
   createComplaint,
   getComplaints,
