@@ -69,25 +69,36 @@ const riskPrediction = async (req, res) => {
 
     let score = 20;
 
-    if (complaint.priority === "high") score += 25;
-    if (complaint.priority === "critical") score += 45;
-    if (complaint.status === "submitted") score += 10;
-    if (complaint.rescue_count > 0) score += 20;
-    if (complaint.evidence_count === 0) score += 5;
+const ageHours =
+  (Date.now() - new Date(complaint.created_at).getTime()) / 3600000;
 
-    score = Math.min(score, 100);
+// Older complaints have a higher chance of being forgotten
+if (ageHours > 24) score += 15;
+if (ageHours > 48) score += 20;
+if (ageHours > 72) score += 25;
 
-    const level =
-      score >= 70 ? "high" :
-      score >= 40 ? "medium" :
-      "low";
+// Existing risk factors
+if (complaint.priority === "high") score += 15;
+if (complaint.priority === "critical") score += 25;
+if (complaint.status === "submitted") score += 10;
+if (complaint.rescue_count > 0) score += 15;
+if (complaint.evidence_count === 0) score += 5;
 
-    res.json({
-      success: true,
-      complaint_id: complaint.id,
-      risk_score: score,
-      risk_level: level
-    });
+score = Math.min(score, 100);
+
+const level =
+  score >= 70 ? "high" :
+  score >= 40 ? "medium" :
+  "low";
+
+   res.json({
+  success: true,
+  complaint_id: complaint.id,
+  risk_score: score,
+  risk_level: level,
+  age_hours: Math.round(ageHours * 10) / 10,
+  prediction: "This complaint may be at risk of being forgotten if no action is taken."
+});
   } catch (error) {
     console.error("Risk prediction error:", error.message);
 
