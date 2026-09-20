@@ -2,12 +2,21 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>CivicTrack - Complaint Details</title>
 
-    <link rel="stylesheet" href="css/officer.css">
+    <link
+        rel="stylesheet"
+        href="css/officer.css"
+    >
+
 </head>
 
 <body>
@@ -19,14 +28,35 @@
     <header class="officer-header">
 
         <div class="brand">
+
             <h1>CivicTrack</h1>
+
             <p>Officer Portal</p>
+
         </div>
 
+
         <nav>
-            <a href="dashboard.html">Dashboard</a>
-            <a href="complaints.html" class="active">Complaints</a>
-            <a href="index.html">Logout</a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a
+                href="complaints.html"
+                class="active"
+            >
+                Complaints
+            </a>
+
+            <a href="notifications.html">
+                Notifications
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
+
         </nav>
 
     </header>
@@ -38,22 +68,28 @@
 
     <main class="details-container">
 
-
-        <!-- =================================================
-             PAGE HEADING
-             ================================================= -->
+        <!-- PAGE HEADING -->
 
         <div class="details-heading">
 
             <div>
-                <h2>Complaint Details</h2>
+
+                <h2>
+                    Complaint Details
+                </h2>
 
                 <p>
-                    Review the complaint and manage its follow-through.
+                    Review the complaint, risk intelligence,
+                    and manage its follow-through.
                 </p>
+
             </div>
 
-            <a href="complaints.html" class="back-button">
+
+            <a
+                href="complaints.html"
+                class="back-button"
+            >
                 ← Back to Complaints
             </a>
 
@@ -69,8 +105,13 @@
             <div class="details-card-header">
 
                 <div>
-                    <h3>Complaint Information</h3>
+
+                    <h3>
+                        Complaint Information
+                    </h3>
+
                 </div>
+
 
                 <span
                     id="complaintStatus"
@@ -85,38 +126,54 @@
             <div class="details-grid">
 
                 <div class="detail-item">
-                    <span>Complaint ID</span>
+
+                    <span>
+                        Complaint ID
+                    </span>
 
                     <strong id="complaintId">
                         Loading...
                     </strong>
+
                 </div>
 
 
                 <div class="detail-item">
-                    <span>Category</span>
+
+                    <span>
+                        Category
+                    </span>
 
                     <strong id="complaintCategory">
                         Loading...
                     </strong>
+
                 </div>
 
 
                 <div class="detail-item">
-                    <span>Reported Date & Time</span>
+
+                    <span>
+                        Reported Date & Time
+                    </span>
 
                     <strong id="complaintDate">
                         Loading...
                     </strong>
+
                 </div>
 
 
                 <div class="detail-item">
-                    <span>Location</span>
+
+                    <span>
+                        Location
+                    </span>
 
                     <strong id="complaintLocation">
                         Loading...
                     </strong>
+
                 </div>
 
             </div>
@@ -124,10 +181,13 @@
 
             <div class="description-section">
 
-                <h4>Description</h4>
+                <h4>
+                    Description
+                </h4>
 
                 <p id="complaintDescription">
-                    Complaint description will be loaded from the CivicTrack backend.
+                    Complaint description will be loaded
+                    from the CivicTrack backend.
                 </p>
 
             </div>
@@ -135,15 +195,30 @@
         </section>
 
 
-
         <!-- =================================================
-             COMPLAINT HEALTH
+             RISK INTELLIGENCE
              ================================================= -->
 
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Complaint Health</h3>
+
+                <div>
+
+                    <h3>
+                        Risk Intelligence
+                    </h3>
+
+                </div>
+
+
+                <span
+                    id="riskLevel"
+                    class="status-badge"
+                >
+                    Loading...
+                </span>
+
             </div>
 
 
@@ -151,14 +226,16 @@
 
                 <div class="health-box">
 
-                    <span>Health Score</span>
+                    <span>
+                        Risk Score
+                    </span>
 
-                    <strong id="healthScore">
+                    <strong id="riskScore">
                         Loading...
                     </strong>
 
                     <small>
-                        Higher score means healthier complaint progress.
+                        Score from 0 to 100.
                     </small>
 
                 </div>
@@ -166,22 +243,135 @@
 
                 <div class="health-box">
 
-                    <span>Risk Level</span>
+                    <span>
+                        Complaint Age
+                    </span>
 
-                    <strong id="riskLevel">
+                    <strong id="riskAge">
                         Loading...
                     </strong>
 
                     <small>
-                        Risk level is calculated by the Complaint Health Engine.
+                        Age of the complaint in hours.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Inactive Hours
+                    </span>
+
+                    <strong id="riskInactiveHours">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Time since the last activity.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Category
+                    </span>
+
+                    <strong id="riskCategory">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Category used by the risk engine.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        History Count
+                    </span>
+
+                    <strong id="riskHistoryCount">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Number of status history records.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Nearby Similar Complaints
+                    </span>
+
+                    <strong id="riskNearbyComplaints">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Similar complaints detected nearby.
                     </small>
 
                 </div>
 
             </div>
 
+
+            <div class="description-section">
+
+                <h4>
+                    Prediction Message
+                </h4>
+
+                <p id="riskPredictionMessage">
+                    Risk prediction will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
         </section>
 
+
+        <!-- =================================================
+             RISK EXPLANATION
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Why is this complaint at risk?
+                </h3>
+
+            </div>
+
+
+            <div
+                id="riskFactors"
+                class="evidence-container"
+            >
+
+                <p class="loading-text">
+                    Risk explanation will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
+        </section>
 
 
         <!-- =================================================
@@ -191,7 +381,11 @@
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Citizen Information</h3>
+
+                <h3>
+                    Citizen Information
+                </h3>
+
             </div>
 
 
@@ -199,7 +393,9 @@
 
                 <div class="detail-item">
 
-                    <span>Citizen Name</span>
+                    <span>
+                        Citizen Name
+                    </span>
 
                     <strong id="citizenName">
                         Loading...
@@ -210,7 +406,9 @@
 
                 <div class="detail-item">
 
-                    <span>Citizen Contact</span>
+                    <span>
+                        Citizen Contact
+                    </span>
 
                     <strong id="citizenContact">
                         Loading...
@@ -223,7 +421,6 @@
         </section>
 
 
-
         <!-- =================================================
              CITIZEN EVIDENCE
              ================================================= -->
@@ -231,7 +428,11 @@
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Citizen Evidence</h3>
+
+                <h3>
+                    Citizen Evidence
+                </h3>
+
             </div>
 
 
@@ -241,13 +442,13 @@
             >
 
                 <p class="loading-text">
-                    Evidence will be loaded from the CivicTrack backend.
+                    Evidence will be loaded
+                    from the CivicTrack backend.
                 </p>
 
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -257,7 +458,11 @@
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Complaint Timeline</h3>
+
+                <h3>
+                    Complaint Timeline
+                </h3>
+
             </div>
 
 
@@ -267,13 +472,13 @@
             >
 
                 <p class="loading-text">
-                    Complaint timeline will be loaded from the CivicTrack backend.
+                    Complaint timeline will be loaded
+                    from the CivicTrack backend.
                 </p>
 
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -283,7 +488,11 @@
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Assignment</h3>
+
+                <h3>
+                    Assignment
+                </h3>
+
             </div>
 
 
@@ -291,7 +500,9 @@
 
                 <div class="detail-item">
 
-                    <span>Current Department</span>
+                    <span>
+                        Current Department
+                    </span>
 
                     <strong id="assignedDepartment">
                         Loading...
@@ -302,7 +513,9 @@
 
                 <div class="detail-item">
 
-                    <span>Current Officer</span>
+                    <span>
+                        Current Officer
+                    </span>
 
                     <strong id="assignedOfficer">
                         Loading...
@@ -315,12 +528,15 @@
 
             <div class="assignment-form">
 
-                <h4>Assign Complaint</h4>
+                <h4>
+                    Assign Complaint
+                </h4>
 
 
                 <label for="departmentInput">
                     Department
                 </label>
+
 
                 <input
                     type="text"
@@ -333,6 +549,7 @@
                 <label for="officerInput">
                     Officer
                 </label>
+
 
                 <input
                     type="text"
@@ -357,95 +574,48 @@
         </section>
 
 
-
         <!-- =================================================
-             OFFICER ACTION + STATUS UPDATE
+             OFFICER ACTION / RESOLUTION
              ================================================= -->
 
         <section class="details-card">
 
             <div class="details-card-header">
 
-                <h3>Officer Action</h3>
+                <h3>
+                    Officer Action & Resolution
+                </h3>
 
             </div>
 
 
             <div class="action-form">
 
-
-                <!-- Action taken -->
-
-                <label for="actionDescription">
-                    Action Taken
+                <label for="resolutionNote">
+                    Action / Resolution Note
                 </label>
 
 
                 <textarea
-                    id="actionDescription"
+                    id="resolutionNote"
                     rows="5"
-                    placeholder="Enter the action taken for this complaint"
+                    placeholder="Describe the action taken or resolution of the complaint"
                 ></textarea>
 
 
-
-                <!-- Status update -->
-
-                <label for="statusUpdate">
-                    Update Status
-                </label>
-
-
-                <select id="statusUpdate">
-
-                    <option value="">
-                        Select new status
-                    </option>
-
-                    <option value="assigned">
-                        Assigned
-                    </option>
-
-                    <option value="in_progress">
-                        In Progress
-                    </option>
-
-                    <option value="rescue_required">
-                        Rescue Required
-                    </option>
-
-                    <option value="verification_pending">
-                        Verification Pending
-                    </option>
-
-                    <option value="closed">
-                        Closed
-                    </option>
-
-                    <option value="reopened">
-                        Reopened
-                    </option>
-
-                </select>
-
-
-
-                <!-- Record action -->
-
                 <button
                     type="button"
-                    id="recordActionButton"
+                    id="markResolvedButton"
                 >
-                    Record Action
+                    Mark Complaint as Resolved
                 </button>
 
 
-                <p id="actionMessage"></p>
+                <p id="resolutionMessage"></p>
 
             </div>
 
         </section>
-
 
 
         <!-- =================================================
@@ -455,7 +625,11 @@
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Complaint Rescue</h3>
+
+                <h3>
+                    Complaint Rescue
+                </h3>
+
             </div>
 
 
@@ -485,7 +659,6 @@
         </section>
 
 
-
         <!-- =================================================
              PROOF OF PROGRESS
              ================================================= -->
@@ -493,7 +666,11 @@
         <section class="details-card">
 
             <div class="details-card-header">
-                <h3>Proof of Progress</h3>
+
+                <h3>
+                    Proof of Progress
+                </h3>
+
             </div>
 
 
@@ -526,7 +703,6 @@
         </section>
 
 
-
         <!-- =================================================
              CITIZEN VERIFICATION
              ================================================= -->
@@ -535,14 +711,16 @@
 
             <div class="details-card-header">
 
-                <h3>Citizen Verification</h3>
+                <h3>
+                    Citizen Verification
+                </h3>
 
 
                 <span
                     id="verificationStatus"
                     class="status-badge"
                 >
-                    Loading...
+                    Awaiting verification request
                 </span>
 
             </div>
@@ -552,24 +730,43 @@
 
                 <p>
 
-                    The complaint can be closed after successful
-                    citizen verification. A negative verification
-                    can reopen the complaint.
+                    After the complaint is resolved, the citizen
+                    can request verification. The officer can then
+                    accept the resolution or reopen the complaint.
 
                 </p>
 
             </div>
 
-        </section>
 
+            <div class="verification-actions">
+
+                <button
+                    type="button"
+                    id="verifyResolutionButton"
+                    class="success-button"
+                >
+                    Verify Resolution
+                </button>
+
+
+                <button
+                    type="button"
+                    id="reopenComplaintButton"
+                    class="critical-button"
+                >
+                    Reopen Complaint
+                </button>
+
+
+                <p id="verificationMessage"></p>
+
+            </div>
+
+        </section>
 
     </main>
 
-
-
-    <!-- =====================================================
-         JAVASCRIPT
-         ===================================================== -->
 
     <script src="js/officer.js"></script>
 

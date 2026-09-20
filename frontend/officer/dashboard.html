@@ -2,116 +2,250 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>CivicTrack - Officer Dashboard</title>
 
-    <link rel="stylesheet" href="css/officer.css">
+    <link
+        rel="stylesheet"
+        href="css/officer.css"
+    >
+
 </head>
 
 <body>
 
-    <!-- =========================
-         TOP NAVIGATION
-         ========================= -->
+    <!-- =====================================================
+         OFFICER HEADER
+         ===================================================== -->
 
     <header class="officer-header">
 
         <div class="brand">
+
             <h1>CivicTrack</h1>
+
             <p>Officer Portal</p>
+
         </div>
 
+
         <nav>
-            <a href="dashboard.html" class="active">Dashboard</a>
-            <a href="complaints.html">Complaints</a>
-            <a href="index.html">Logout</a>
+
+            <a
+                href="dashboard.html"
+                class="active"
+            >
+                Dashboard
+            </a>
+
+            <a href="complaints.html">
+                Complaints
+            </a>
+
+            <a href="notifications.html">
+                Notifications
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
+
         </nav>
 
     </header>
 
 
-    <!-- =========================
+    <!-- =====================================================
          MAIN DASHBOARD
-         ========================= -->
+         ===================================================== -->
 
     <main class="dashboard-container">
 
+        <!-- PAGE HEADING -->
+
         <div class="dashboard-heading">
-            <h2>Officer Dashboard</h2>
-            <p>Monitor complaints and follow their progress.</p>
+
+            <h2>
+                Officer Dashboard
+            </h2>
+
+            <p>
+                Monitor complaints, risk levels, and follow their progress.
+            </p>
+
         </div>
 
 
-        <!-- =========================
+        <!-- =================================================
              SUMMARY CARDS
-             ========================= -->
+             ================================================= -->
 
         <section class="summary-grid">
 
             <div class="summary-card">
-                <span>Total Complaints</span>
-                <strong id="totalComplaints">Loading...</strong>
+
+                <span>
+                    Total Complaints
+                </span>
+
+                <strong id="totalComplaints">
+                    Loading...
+                </strong>
+
             </div>
+
 
             <div class="summary-card">
-                <span>On Track</span>
-                <strong id="onTrack">Loading...</strong>
+
+                <span>
+                    Assigned to Me
+                </span>
+
+                <strong id="assignedComplaints">
+                    Loading...
+                </strong>
+
             </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Open Complaints
+                </span>
+
+                <strong id="openComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
 
             <div class="summary-card warning-card">
-                <span>Needs Attention</span>
-                <strong id="needsAttention">Loading...</strong>
+
+                <span>
+                    Overdue
+                </span>
+
+                <strong id="overdueComplaints">
+                    Loading...
+                </strong>
+
             </div>
 
-            <div class="summary-card danger-card">
-                <span>High Risk</span>
-                <strong id="highRisk">Loading...</strong>
-            </div>
 
             <div class="summary-card danger-card">
-                <span>Rescue Required</span>
-                <strong id="rescueRequired">Loading...</strong>
+
+                <span>
+                    High Risk
+                </span>
+
+                <strong id="highRiskComplaints">
+                    Loading...
+                </strong>
+
             </div>
+
+
+            <div class="summary-card danger-card">
+
+                <span>
+                    Active Rescue
+                </span>
+
+                <strong id="rescueComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
 
             <div class="summary-card success-card">
-                <span>Resolved</span>
-                <strong id="resolved">Loading...</strong>
+
+                <span>
+                    Resolved
+                </span>
+
+                <strong id="resolvedComplaints">
+                    Loading...
+                </strong>
+
             </div>
 
+
             <div class="summary-card warning-card">
-                <span>Reopened</span>
-                <strong id="reopened">Loading...</strong>
+
+                <span>
+                    Reopened
+                </span>
+
+                <strong id="reopenedComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card success-card">
+
+                <span>
+                    Verified
+                </span>
+
+                <strong id="verifiedComplaints">
+                    Loading...
+                </strong>
+
             </div>
 
         </section>
 
 
-        <!-- =========================
+        <!-- =================================================
              QUICK ACTIONS
-             ========================= -->
+             ================================================= -->
 
         <section class="dashboard-section">
 
-            <h3>Quick Actions</h3>
+            <h3>
+                Quick Actions
+            </h3>
 
             <div class="quick-actions">
 
-                <a href="complaints.html" class="action-button">
-                    View Complaints
+                <a
+                    href="complaints.html"
+                    class="action-button"
+                >
+                    View All Complaints
                 </a>
 
-                <a href="complaints.html?filter=high-risk" class="action-button">
-                    High-Risk Complaints
+                <a
+                    href="complaints.html?status=assigned"
+                    class="action-button"
+                >
+                    Assigned Complaints
                 </a>
 
-                <a href="complaints.html?filter=rescue" class="action-button">
-                    Rescue Cases
+                <a
+                    href="complaints.html?status=reopened"
+                    class="action-button"
+                >
+                    Reopened Complaints
                 </a>
 
-                <a href="complaints.html?filter=verification" class="action-button">
-                    Verification Pending
+                <a
+                    href="complaints.html?status=resolved"
+                    class="action-button"
+                >
+                    Resolved Complaints
                 </a>
 
             </div>
@@ -119,20 +253,46 @@
         </section>
 
 
-        <!-- =========================
-             SYSTEM MESSAGE
-             ========================= -->
+        <!-- =================================================
+             RISK INTELLIGENCE MESSAGE
+             ================================================= -->
 
         <section class="dashboard-section">
 
             <div class="info-box">
 
-                <h3>Complaint Follow-through</h3>
+                <h3>
+                    Risk Intelligence
+                </h3>
+
+                <p>
+                    CivicTrack analyzes complaint age, inactivity,
+                    priority, status, evidence, history, and nearby
+                    similar complaints to identify complaints that
+                    may require attention.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINT FOLLOW-THROUGH
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="info-box">
+
+                <h3>
+                    Complaint Follow-through
+                </h3>
 
                 <p>
                     Complaints are monitored from submission through
-                    action, proof of progress, citizen verification,
-                    closure, or reopening.
+                    assignment, action, resolution, citizen verification,
+                    and reopening when required.
                 </p>
 
             </div>
