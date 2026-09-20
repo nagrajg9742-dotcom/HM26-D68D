@@ -24,15 +24,23 @@
         </div>
 
         <nav>
-            <a href="dashboard.html">Dashboard</a>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
 
             <a href="complaints.html" class="active">
                 Complaints
             </a>
 
+            <a href="notifications.html">
+                Notifications
+            </a>
+
             <a href="index.html">
                 Logout
             </a>
+
         </nav>
 
     </header>
@@ -44,10 +52,7 @@
 
     <main class="complaints-container">
 
-
-        <!-- =================================================
-             PAGE HEADING
-             ================================================= -->
+        <!-- PAGE HEADING -->
 
         <div class="complaints-heading">
 
@@ -56,7 +61,7 @@
                 <h2>Complaint Queue</h2>
 
                 <p>
-                    Review complaints and identify cases that need attention.
+                    Review complaints and manage their current status.
                 </p>
 
             </div>
@@ -69,7 +74,6 @@
              ================================================= -->
 
         <section class="complaint-filters">
-
 
             <!-- STATUS FILTER -->
 
@@ -97,51 +101,16 @@
                         In Progress
                     </option>
 
-                    <option value="rescue_required">
-                        Rescue Required
-                    </option>
-
-                    <option value="verification_pending">
-                        Verification Pending
-                    </option>
-
-                    <option value="closed">
-                        Closed
+                    <option value="resolved">
+                        Resolved
                     </option>
 
                     <option value="reopened">
                         Reopened
                     </option>
 
-                </select>
-
-            </div>
-
-
-            <!-- RISK FILTER -->
-
-            <div class="filter-group">
-
-                <label for="riskFilter">
-                    Risk
-                </label>
-
-                <select id="riskFilter">
-
-                    <option value="all">
-                        All Risks
-                    </option>
-
-                    <option value="low">
-                        Low
-                    </option>
-
-                    <option value="medium">
-                        Medium
-                    </option>
-
-                    <option value="high">
-                        High
+                    <option value="verified">
+                        Verified
                     </option>
 
                 </select>
@@ -160,7 +129,7 @@
                 <input
                     type="search"
                     id="complaintSearch"
-                    placeholder="Search Complaint ID"
+                    placeholder="Search Complaint ID or Title"
                     autocomplete="off"
                 >
 
@@ -174,7 +143,6 @@
              ================================================= -->
 
         <section class="complaints-table-card">
-
 
             <div class="table-header">
 
@@ -202,7 +170,7 @@
                             </th>
 
                             <th>
-                                Category
+                                Title
                             </th>
 
                             <th>
@@ -211,18 +179,6 @@
 
                             <th>
                                 Status
-                            </th>
-
-                            <th>
-                                Health
-                            </th>
-
-                            <th>
-                                Risk
-                            </th>
-
-                            <th>
-                                Priority
                             </th>
 
                             <th>
@@ -239,10 +195,10 @@
                         <tr>
 
                             <td
-                                colspan="8"
+                                colspan="5"
                                 class="table-loading"
                             >
-                                Complaint data will appear here when loaded from the CivicTrack backend.
+                                Loading complaints from the CivicTrack backend...
                             </td>
 
                         </tr>
@@ -254,7 +210,6 @@
             </div>
 
         </section>
-
 
     </main>
 
