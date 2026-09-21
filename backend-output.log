@@ -1,0 +1,19 @@
+CivicTrack backend running on port 5000
+REGISTER BODY: {
+  name: 'Priya Test',
+  email: 'priya999@test.com',
+  phone: '9876543210',
+  password: 'Test12345'
+}
+REGISTER BODY: {
+  name: 'test',
+  email: 'test@123',
+  phone: '1234567892',
+  password: '12345678'
+}
+REGISTER BODY: {
+  name: 'Aishwarya',
+  email: 'aishwarya@123',
+  phone: '1234567896',
+  password: '12345678'
+}

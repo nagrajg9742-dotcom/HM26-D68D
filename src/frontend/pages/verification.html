@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Verify Resolution | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            CivicTrack
+        </div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="report.html">Report</a>
+            <a href="tracking.html">Track</a>
+            <a href="complaints.html">My Complaints</a>
+            <a href="notifications.html">Notifications</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Verification Page -->
+
+    <main class="verification-page">
+
+        <section class="verification-header">
+
+            <span class="section-tag">
+                RESOLUTION REVIEW
+            </span>
+
+            <h1>Verify Your Complaint</h1>
+
+            <p>
+                Review the resolution submitted by the concerned officer
+                and confirm whether your issue has been resolved.
+            </p>
+
+        </section>
+
+
+        <!-- Complaint ID -->
+
+        <section class="verification-card">
+
+            <div class="verification-card-header">
+
+                <div>
+                    <span class="detail-label">
+                        COMPLAINT ID
+                    </span>
+
+                    <h2 id="verificationComplaintId">
+                        —
+                    </h2>
+                </div>
+
+                <span class="status-badge">
+                    Awaiting Verification
+                </span>
+
+            </div>
+
+
+            <!-- Resolution Proof -->
+
+            <div class="proof-section">
+
+                <span class="section-tag">
+                    OFFICER RESOLUTION PROOF
+                </span>
+
+                <h2>Review the Resolution</h2>
+
+                <div
+                    id="proofEmpty"
+                    class="proof-empty"
+                >
+
+                    <div class="proof-icon">
+                        📷
+                    </div>
+
+                    <h3>Resolution proof not available yet</h3>
+
+                    <p>
+                        Once the officer submits resolution proof,
+                        it will appear here for your review.
+                    </p>
+
+                </div>
+
+
+                <!-- Proof will be displayed here later -->
+
+                <div
+                    id="proofContent"
+                    class="proof-content"
+                >
+
+                </div>
+
+            </div>
+
+
+            <!-- Verification Actions -->
+
+            <div class="verification-actions">
+
+                <h2>Has the issue been resolved?</h2>
+
+                <p>
+                    Your confirmation helps CivicTrack maintain accurate
+                    complaint records.
+                </p>
+
+                <div class="verification-buttons">
+
+                    <button
+                        id="resolvedBtn"
+                        class="verify-btn resolved"
+                    >
+                        ✓ Yes, Issue Resolved
+                    </button>
+
+                    <button
+                        id="notResolvedBtn"
+                        class="verify-btn not-resolved"
+                    >
+                        Issue Not Resolved
+                    </button>
+
+                </div>
+
+                <p
+                    id="verificationMessage"
+                    class="form-message"
+                ></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div>
+            <h3>CivicTrack</h3>
+
+            <p>
+                Helping citizens build a better Mysuru.
+            </p>
+        </div>
+
+        <p>
+            © 2026 CivicTrack
+        </p>
+
+    </footer>
+
+
+    <script src="../js/verification.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CivicTrack - Officer Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="css/officer.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         OFFICER HEADER
+         ===================================================== -->
+
+    <header class="officer-header">
+
+        <div class="brand">
+
+            <h1>CivicTrack</h1>
+
+            <p>Officer Portal</p>
+
+        </div>
+
+
+        <nav>
+
+            <a
+                href="dashboard.html"
+                class="active"
+            >
+                Dashboard
+            </a>
+
+            <a href="complaints.html">
+                Complaints
+            </a>
+
+            <a href="notifications.html">
+                Notifications
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN DASHBOARD
+         ===================================================== -->
+
+    <main class="dashboard-container">
+
+        <!-- PAGE HEADING -->
+
+        <div class="dashboard-heading">
+
+            <h2>
+                Officer Dashboard
+            </h2>
+
+            <p>
+                Monitor complaints, risk levels, and follow their progress.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             SUMMARY CARDS
+             ================================================= -->
+
+        <section class="summary-grid">
+
+            <div class="summary-card">
+
+                <span>
+                    Total Complaints
+                </span>
+
+                <strong id="totalComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Assigned to Me
+                </span>
+
+                <strong id="assignedComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <span>
+                    Open Complaints
+                </span>
+
+                <strong id="openComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card warning-card">
+
+                <span>
+                    Overdue
+                </span>
+
+                <strong id="overdueComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card danger-card">
+
+                <span>
+                    High Risk
+                </span>
+
+                <strong id="highRiskComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card danger-card">
+
+                <span>
+                    Active Rescue
+                </span>
+
+                <strong id="rescueComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card success-card">
+
+                <span>
+                    Resolved
+                </span>
+
+                <strong id="resolvedComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card warning-card">
+
+                <span>
+                    Reopened
+                </span>
+
+                <strong id="reopenedComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+
+            <div class="summary-card success-card">
+
+                <span>
+                    Verified
+                </span>
+
+                <strong id="verifiedComplaints">
+                    Loading...
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             QUICK ACTIONS
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <h3>
+                Quick Actions
+            </h3>
+
+            <div class="quick-actions">
+
+                <a
+                    href="complaints.html"
+                    class="action-button"
+                >
+                    View All Complaints
+                </a>
+
+                <a
+                    href="complaints.html?status=assigned"
+                    class="action-button"
+                >
+                    Assigned Complaints
+                </a>
+
+                <a
+                    href="complaints.html?status=reopened"
+                    class="action-button"
+                >
+                    Reopened Complaints
+                </a>
+
+                <a
+                    href="complaints.html?status=resolved"
+                    class="action-button"
+                >
+                    Resolved Complaints
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RISK INTELLIGENCE MESSAGE
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="info-box">
+
+                <h3>
+                    Risk Intelligence
+                </h3>
+
+                <p>
+                    CivicTrack analyzes complaint age, inactivity,
+                    priority, status, evidence, history, and nearby
+                    similar complaints to identify complaints that
+                    may require attention.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINT FOLLOW-THROUGH
+             ================================================= -->
+
+        <section class="dashboard-section">
+
+            <div class="info-box">
+
+                <h3>
+                    Complaint Follow-through
+                </h3>
+
+                <p>
+                    Complaints are monitored from submission through
+                    assignment, action, resolution, citizen verification,
+                    and reopening when required.
+                </p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/officer.js"></script>
+
+</body>
+
+</html>

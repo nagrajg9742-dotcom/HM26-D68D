@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Track Complaint | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <div class="logo">
+            <h2>CivicTrack</h2>
+            <span>Mysuru Civic Services</span>
+        </div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="report.html">Report</a>
+            <a href="tracking.html" class="active">Track</a>
+            <a href="complaints.html">My Complaints</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+
+    </header>
+
+
+    <main class="tracking-page">
+
+        <section class="tracking-header">
+
+            <p>COMPLAINT TRACKING</p>
+
+            <h1>Track Your Complaint</h1>
+
+            <span>
+                Enter your complaint ID to view its current status.
+            </span>
+
+        </section>
+
+
+        <!-- Search -->
+
+        <section class="tracking-search-card">
+
+            <h2>Find Your Complaint</h2>
+
+            <p>
+                Enter the complaint ID you received after submitting
+                your complaint.
+            </p>
+
+            <div class="tracking-search">
+
+                <input
+                    type="text"
+                    id="complaintId"
+                    placeholder="Example: 1"
+                >
+
+                <button type="button" id="trackBtn">
+                    Track Complaint
+                </button>
+
+            </div>
+
+            <p id="trackingMessage"></p>
+
+        </section>
+
+
+        <!-- Results -->
+
+        <section
+            id="complaintDetails"
+            class="complaint-details"
+            style="display: none;"
+        >
+
+            <h2>Complaint Details</h2>
+
+
+            <div class="tracking-info-grid">
+
+                <div class="tracking-info-card">
+
+                    <span>Complaint ID</span>
+
+                    <strong id="displayComplaintId">-</strong>
+
+                </div>
+
+
+                <div class="tracking-info-card">
+
+                    <span>Category</span>
+
+                    <strong id="displayCategory">-</strong>
+
+                </div>
+
+
+                <div class="tracking-info-card">
+
+                    <span>Status</span>
+
+                    <strong id="displayStatus">-</strong>
+
+                </div>
+
+
+                <div class="tracking-info-card">
+
+                    <span>Location</span>
+
+                    <strong id="displayLocation">-</strong>
+
+                </div>
+
+
+                <div class="tracking-info-card">
+
+                    <span>Submitted</span>
+
+                    <strong id="displayDate">-</strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- Timeline -->
+
+            <div class="timeline-section">
+
+                <h2>Complaint Timeline</h2>
+
+                <p>
+                    Follow the progress of your complaint.
+                </p>
+
+
+                <div class="timeline">
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">1</div>
+
+                        <div class="timeline-content">
+
+                            <h3>Complaint Submitted</h3>
+
+                            <p>
+                                Your complaint has been submitted successfully.
+                            </p>
+
+                            <span>Submitted</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">2</div>
+
+                        <div class="timeline-content">
+
+                            <h3>Complaint Assigned</h3>
+
+                            <p>
+                                Your complaint will be assigned to the
+                                concerned department.
+                            </p>
+
+                            <span>Waiting</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">3</div>
+
+                        <div class="timeline-content">
+
+                            <h3>Officer Working</h3>
+
+                            <p>
+                                The concerned officer is working on
+                                the complaint.
+                            </p>
+
+                            <span>Waiting</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">4</div>
+
+                        <div class="timeline-content">
+
+                            <h3>Resolution Submitted</h3>
+
+                            <p>
+                                The officer will submit the resolution.
+                            </p>
+
+                            <span>Waiting</span>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="timeline-item">
+
+                        <div class="timeline-dot">5</div>
+
+                        <div class="timeline-content">
+
+                            <h3>Citizen Verification</h3>
+
+                            <p>
+                                You can verify the resolution.
+                            </p>
+
+                            <span>Waiting</span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer class="footer">
+
+        <p>© 2026 CivicTrack | Mysuru Civic Services</p>
+
+    </footer>
+
+
+    <script src="../js/tracking.js"></script>
+
+</body>
+
+</html>

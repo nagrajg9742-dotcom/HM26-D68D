@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>CivicTrack - Complaint Details</title>
+
+    <link
+        rel="stylesheet"
+        href="css/officer.css"
+    >
+
+</head>
+
+<body>
+
+    <!-- =====================================================
+         OFFICER HEADER
+         ===================================================== -->
+
+    <header class="officer-header">
+
+        <div class="brand">
+
+            <h1>CivicTrack</h1>
+
+            <p>Officer Portal</p>
+
+        </div>
+
+
+        <nav>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a
+                href="complaints.html"
+                class="active"
+            >
+                Complaints
+            </a>
+
+            <a href="notifications.html">
+                Notifications
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="details-container">
+
+        <!-- PAGE HEADING -->
+
+        <div class="details-heading">
+
+            <div>
+
+                <h2>
+                    Complaint Details
+                </h2>
+
+                <p>
+                    Review the complaint, risk intelligence,
+                    and manage its follow-through.
+                </p>
+
+            </div>
+
+
+            <a
+                href="complaints.html"
+                class="back-button"
+            >
+                ← Back to Complaints
+            </a>
+
+        </div>
+
+
+        <!-- =================================================
+             COMPLAINT INFORMATION
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <div>
+
+                    <h3>
+                        Complaint Information
+                    </h3>
+
+                </div>
+
+
+                <span
+                    id="complaintStatus"
+                    class="status-badge"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+
+                    <span>
+                        Complaint ID
+                    </span>
+
+                    <strong id="complaintId">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Category
+                    </span>
+
+                    <strong id="complaintCategory">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Reported Date & Time
+                    </span>
+
+                    <strong id="complaintDate">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Location
+                    </span>
+
+                    <strong id="complaintLocation">
+                        Loading...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="description-section">
+
+                <h4>
+                    Description
+                </h4>
+
+                <p id="complaintDescription">
+                    Complaint description will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RISK INTELLIGENCE
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <div>
+
+                    <h3>
+                        Risk Intelligence
+                    </h3>
+
+                </div>
+
+
+                <span
+                    id="riskLevel"
+                    class="status-badge"
+                >
+                    Loading...
+                </span>
+
+            </div>
+
+
+            <div class="health-grid">
+
+                <div class="health-box">
+
+                    <span>
+                        Risk Score
+                    </span>
+
+                    <strong id="riskScore">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Score from 0 to 100.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Complaint Age
+                    </span>
+
+                    <strong id="riskAge">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Age of the complaint in hours.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Inactive Hours
+                    </span>
+
+                    <strong id="riskInactiveHours">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Time since the last activity.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Category
+                    </span>
+
+                    <strong id="riskCategory">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Category used by the risk engine.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        History Count
+                    </span>
+
+                    <strong id="riskHistoryCount">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Number of status history records.
+                    </small>
+
+                </div>
+
+
+                <div class="health-box">
+
+                    <span>
+                        Nearby Similar Complaints
+                    </span>
+
+                    <strong id="riskNearbyComplaints">
+                        Loading...
+                    </strong>
+
+                    <small>
+                        Similar complaints detected nearby.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="description-section">
+
+                <h4>
+                    Prediction Message
+                </h4>
+
+                <p id="riskPredictionMessage">
+                    Risk prediction will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             RISK EXPLANATION
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Why is this complaint at risk?
+                </h3>
+
+            </div>
+
+
+            <div
+                id="riskFactors"
+                class="evidence-container"
+            >
+
+                <p class="loading-text">
+                    Risk explanation will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CITIZEN INFORMATION
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Citizen Information
+                </h3>
+
+            </div>
+
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+
+                    <span>
+                        Citizen Name
+                    </span>
+
+                    <strong id="citizenName">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Citizen Contact
+                    </span>
+
+                    <strong id="citizenContact">
+                        Loading...
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CITIZEN EVIDENCE
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Citizen Evidence
+                </h3>
+
+            </div>
+
+
+            <div
+                id="citizenEvidence"
+                class="evidence-container"
+            >
+
+                <p class="loading-text">
+                    Evidence will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINT TIMELINE
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Complaint Timeline
+                </h3>
+
+            </div>
+
+
+            <div
+                id="complaintTimeline"
+                class="timeline"
+            >
+
+                <p class="loading-text">
+                    Complaint timeline will be loaded
+                    from the CivicTrack backend.
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ASSIGNMENT
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Assignment
+                </h3>
+
+            </div>
+
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+
+                    <span>
+                        Current Department
+                    </span>
+
+                    <strong id="assignedDepartment">
+                        Loading...
+                    </strong>
+
+                </div>
+
+
+                <div class="detail-item">
+
+                    <span>
+                        Current Officer
+                    </span>
+
+                    <strong id="assignedOfficer">
+                        Loading...
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="assignment-form">
+
+                <h4>
+                    Assign Complaint
+                </h4>
+
+
+                <label for="departmentInput">
+                    Department
+                </label>
+
+
+                <input
+                    type="text"
+                    id="departmentInput"
+                    placeholder="Enter department"
+                    autocomplete="organization"
+                >
+
+
+                <label for="officerInput">
+                    Officer
+                </label>
+
+
+                <input
+                    type="text"
+                    id="officerInput"
+                    placeholder="Enter officer name or ID"
+                    autocomplete="off"
+                >
+
+
+                <button
+                    type="button"
+                    id="assignComplaintButton"
+                >
+                    Assign Complaint
+                </button>
+
+
+                <p id="assignmentMessage"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             OFFICER ACTION / RESOLUTION
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Officer Action & Resolution
+                </h3>
+
+            </div>
+
+
+            <div class="action-form">
+
+                <label for="resolutionNote">
+                    Action / Resolution Note
+                </label>
+
+
+                <textarea
+                    id="resolutionNote"
+                    rows="5"
+                    placeholder="Describe the action taken or resolution of the complaint"
+                ></textarea>
+
+
+                <button
+                    type="button"
+                    id="markResolvedButton"
+                >
+                    Mark Complaint as Resolved
+                </button>
+
+
+                <p id="resolutionMessage"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINT RESCUE
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Complaint Rescue
+                </h3>
+
+            </div>
+
+
+            <p class="section-description">
+
+                Rescue is used when a complaint is identified
+                as requiring urgent intervention.
+
+            </p>
+
+
+            <div class="details-actions">
+
+                <button
+                    type="button"
+                    id="rescueButton"
+                    class="critical-button"
+                >
+                    Trigger Rescue
+                </button>
+
+            </div>
+
+
+            <p id="rescueMessage"></p>
+
+        </section>
+
+
+        <!-- =================================================
+             PROOF OF PROGRESS
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Proof of Progress
+                </h3>
+
+            </div>
+
+
+            <div class="action-form">
+
+                <label for="proofFile">
+                    Upload Proof
+                </label>
+
+
+                <input
+                    type="file"
+                    id="proofFile"
+                    accept="image/*"
+                >
+
+
+                <button
+                    type="button"
+                    id="uploadProofButton"
+                >
+                    Upload Proof of Progress
+                </button>
+
+
+                <p id="proofMessage"></p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CITIZEN VERIFICATION
+             ================================================= -->
+
+        <section class="details-card">
+
+            <div class="details-card-header">
+
+                <h3>
+                    Citizen Verification
+                </h3>
+
+
+                <span
+                    id="verificationStatus"
+                    class="status-badge"
+                >
+                    Awaiting verification request
+                </span>
+
+            </div>
+
+
+            <div class="verification-info">
+
+                <p>
+
+                    After the complaint is resolved, the citizen
+                    can request verification. The officer can then
+                    accept the resolution or reopen the complaint.
+
+                </p>
+
+            </div>
+
+
+            <div class="verification-actions">
+
+                <button
+                    type="button"
+                    id="verifyResolutionButton"
+                    class="success-button"
+                >
+                    Verify Resolution
+                </button>
+
+
+                <button
+                    type="button"
+                    id="reopenComplaintButton"
+                    class="critical-button"
+                >
+                    Reopen Complaint
+                </button>
+
+
+                <p id="verificationMessage"></p>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <script src="js/officer.js"></script>
+
+</body>
+
+</html>

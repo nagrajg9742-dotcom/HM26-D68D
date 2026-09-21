@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>CivicTrack - Complaints</title>
+
+    <link rel="stylesheet" href="css/officer.css">
+</head>
+
+<body>
+
+    <!-- =====================================================
+         OFFICER HEADER
+         ===================================================== -->
+
+    <header class="officer-header">
+
+        <div class="brand">
+            <h1>CivicTrack</h1>
+            <p>Officer Portal</p>
+        </div>
+
+        <nav>
+
+            <a href="dashboard.html">
+                Dashboard
+            </a>
+
+            <a href="complaints.html" class="active">
+                Complaints
+            </a>
+
+            <a href="notifications.html">
+                Notifications
+            </a>
+
+            <a href="index.html">
+                Logout
+            </a>
+
+        </nav>
+
+    </header>
+
+
+    <!-- =====================================================
+         MAIN CONTENT
+         ===================================================== -->
+
+    <main class="complaints-container">
+
+        <!-- PAGE HEADING -->
+
+        <div class="complaints-heading">
+
+            <div>
+
+                <h2>Complaint Queue</h2>
+
+                <p>
+                    Review complaints and manage their current status.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             FILTERS
+             ================================================= -->
+
+        <section class="complaint-filters">
+
+            <!-- STATUS FILTER -->
+
+            <div class="filter-group">
+
+                <label for="statusFilter">
+                    Status
+                </label>
+
+                <select id="statusFilter">
+
+                    <option value="all">
+                        All Statuses
+                    </option>
+
+                    <option value="submitted">
+                        Submitted
+                    </option>
+
+                    <option value="assigned">
+                        Assigned
+                    </option>
+
+                    <option value="in_progress">
+                        In Progress
+                    </option>
+
+                    <option value="resolved">
+                        Resolved
+                    </option>
+
+                    <option value="reopened">
+                        Reopened
+                    </option>
+
+                    <option value="verified">
+                        Verified
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- SEARCH -->
+
+            <div class="filter-group search-group">
+
+                <label for="complaintSearch">
+                    Search
+                </label>
+
+                <input
+                    type="search"
+                    id="complaintSearch"
+                    placeholder="Search Complaint ID or Title"
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             COMPLAINT TABLE
+             ================================================= -->
+
+        <section class="complaints-table-card">
+
+            <div class="table-header">
+
+                <h3>
+                    Complaints
+                </h3>
+
+                <span id="complaintCount">
+                    0 complaints
+                </span>
+
+            </div>
+
+
+            <div class="table-wrapper">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>
+                                Complaint ID
+                            </th>
+
+                            <th>
+                                Title
+                            </th>
+
+                            <th>
+                                Location
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="complaintsTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="5"
+                                class="table-loading"
+                            >
+                                Loading complaints from the CivicTrack backend...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =====================================================
+         JAVASCRIPT
+         ===================================================== -->
+
+    <script src="js/officer.js"></script>
+
+</body>
+
+</html>

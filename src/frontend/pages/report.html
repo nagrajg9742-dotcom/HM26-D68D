@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Report a Problem | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <header class="navbar">
+        <div class="logo">
+            <h2>CivicTrack</h2>
+            <span>Mysuru Civic Services</span>
+        </div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="report.html" class="active">Report</a>
+            <a href="tracking.html">Track</a>
+            <a href="complaints.html">My Complaints</a>
+        </nav>
+    </header>
+
+
+    <!-- Report Page -->
+    <main class="report-page">
+
+        <section class="report-header">
+            <p>REPORT A CIVIC PROBLEM</p>
+            <h1>Help make Mysuru better 🏙️</h1>
+            <span>
+                Tell us about the problem and provide evidence.
+                Your report will be sent to the civic authorities.
+            </span>
+        </section>
+
+
+        <section class="report-card">
+
+            <form id="complaintForm">
+
+                <!-- Category -->
+                <div class="form-section">
+                    <h2>1. What is the problem?</h2>
+
+                    <label for="category">Problem Category</label>
+
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="garbage">Garbage / Waste</option>
+                        <option value="road">Road Damage</option>
+                        <option value="streetlight">Streetlight</option>
+                        <option value="water">Water Supply</option>
+                        <option value="drainage">Drainage</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+
+                <!-- Description -->
+                <div class="form-section">
+
+                    <label for="description">Describe the problem</label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="6"
+                        placeholder="Explain what is happening and where you noticed it..."
+                        required
+                    ></textarea>
+
+                </div>
+
+
+                <!-- Location -->
+                <div class="form-section">
+
+                    <h2>2. Location</h2>
+
+                    <p class="form-help">
+                        Your location helps the concerned authority identify
+                        the exact place of the problem.
+                    </p>
+
+                    <button
+                        type="button"
+                        id="locationBtn"
+                        class="location-btn">
+                        📍 Use My Current Location
+                    </button>
+
+                    <p id="locationStatus" class="location-status">
+                        Location not captured yet.
+                    </p>
+
+                    <input
+                        type="hidden"
+                        id="latitude"
+                        name="latitude"
+                    >
+
+                    <input
+                        type="hidden"
+                        id="longitude"
+                        name="longitude"
+                    >
+
+                </div>
+
+
+                <!-- Evidence -->
+                <div class="form-section">
+
+                    <h2>3. Add Evidence</h2>
+
+                    <p class="form-help">
+                        Upload a photo or video showing the civic problem.
+                    </p>
+
+                    <label for="evidence">Photo / Video</label>
+
+                    <input
+                        type="file"
+                        id="evidence"
+                        name="evidence"
+                        accept="image/*,video/*"
+                    >
+
+                    <p class="file-help">
+                        Supported: JPG, PNG, WEBP, MP4 and other common formats.
+                    </p>
+
+                </div>
+
+
+                <!-- Submit -->
+                <div class="submit-section">
+
+                    <button
+                        type="submit"
+                        class="submit-complaint-btn">
+                        Submit Complaint
+                    </button>
+
+                    <p id="complaintMessage"></p>
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2026 CivicTrack | Mysuru Civic Services</p>
+    </footer>
+
+
+    <script src="../js/report.js"></script>
+
+</body>
+</html>

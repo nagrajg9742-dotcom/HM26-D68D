@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reopen Complaint | CivicTrack</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+
+    <header class="navbar">
+
+        <div class="logo">
+            CivicTrack
+        </div>
+
+        <nav>
+            <a href="../index.html">Home</a>
+            <a href="report.html">Report</a>
+            <a href="tracking.html">Track</a>
+            <a href="complaints.html">My Complaints</a>
+            <a href="notifications.html">Notifications</a>
+            <a href="login.html">Login</a>
+            <a href="register.html">Register</a>
+        </nav>
+
+    </header>
+
+
+    <!-- Reopen Complaint -->
+
+    <main class="reopen-page">
+
+        <section class="reopen-header">
+
+            <span class="section-tag">
+                COMPLAINT SUPPORT
+            </span>
+
+            <h1>Reopen a Complaint</h1>
+
+            <p>
+                If your complaint was marked as resolved but the issue
+                still exists, you can request a review.
+            </p>
+
+        </section>
+
+
+        <section class="reopen-card">
+
+            <div class="reopen-info">
+
+                <span class="detail-label">
+                    COMPLAINT ID
+                </span>
+
+                <input
+                    type="text"
+                    id="reopenComplaintId"
+                    placeholder="Enter complaint ID"
+                >
+
+            </div>
+
+
+            <div class="reopen-reason">
+
+                <label for="reopenReason">
+                    Why should this complaint be reopened?
+                </label>
+
+                <textarea
+                    id="reopenReason"
+                    rows="6"
+                    placeholder="Please explain why the issue has not been resolved..."
+                ></textarea>
+
+            </div>
+
+
+            <div class="reopen-note">
+
+                <strong>Before requesting a reopening</strong>
+
+                <p>
+                    Please make sure the complaint has already been
+                    marked as resolved and that the issue still exists.
+                </p>
+
+            </div>
+
+
+            <button
+                id="reopenBtn"
+                class="reopen-btn"
+            >
+                Request Reopening
+            </button>
+
+
+            <p
+                id="reopenMessage"
+                class="form-message"
+            ></p>
+
+        </section>
+
+    </main>
+
+
+    <!-- Footer -->
+
+    <footer class="footer">
+
+        <div>
+            <h3>CivicTrack</h3>
+
+            <p>
+                Helping citizens build a better Mysuru.
+            </p>
+        </div>
+
+        <p>
+            © 2026 CivicTrack
+        </p>
+
+    </footer>
+
+
+    <script src="../js/reopen.js"></script>
+
+</body>
+
+</html>
