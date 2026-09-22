@@ -257,10 +257,9 @@ const getComplaints = async (req, res) => {
 // =====================================================
 const getComplaintById = async (req, res) => {
   try {
-
     const complaintId = req.params.id;
 
-    const result = await pool.query(
+    const complaintResult = await pool.query(
       `SELECT
          c.*,
          u.name AS citizen_name,
@@ -272,27 +271,54 @@ const getComplaintById = async (req, res) => {
       [complaintId]
     );
 
-    if (result.rows.length === 0) {
-
+    if (complaintResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
         message: "Complaint not found"
       });
     }
 
-    const complaint = result.rows[0];
+    const complaint = complaintResult.rows[0];
 
     // Citizens can view only their own complaints
     if (
       req.user.role === "citizen" &&
       complaint.citizen_id !== req.user.id
     ) {
-
       return res.status(403).json({
         success: false,
         message: "You are not authorized to view this complaint"
       });
     }
+
+    // Get complaint evidence
+    const evidenceResult = await pool.query(
+      `SELECT
+         e.*,
+         u.name AS uploaded_by_name
+       FROM evidence e
+       JOIN users u
+         ON e.uploaded_by = u.id
+       WHERE e.complaint_id = $1
+       ORDER BY e.uploaded_at DESC`,
+      [complaintId]
+    );
+
+    // Get complaint status timeline
+    const timelineResult = await pool.query(
+      `SELECT
+         h.*,
+         u.name AS changed_by_name
+       FROM complaint_status_history h
+       LEFT JOIN users u
+         ON h.changed_by = u.id
+       WHERE h.complaint_id = $1
+       ORDER BY h.changed_at ASC`,
+      [complaintId]
+    );
+
+    complaint.evidence = evidenceResult.rows;
+    complaint.status_history = timelineResult.rows;
 
     res.json({
       success: true,
@@ -300,7 +326,6 @@ const getComplaintById = async (req, res) => {
     });
 
   } catch (error) {
-
     console.error(
       "Get complaint by ID error:",
       error.message

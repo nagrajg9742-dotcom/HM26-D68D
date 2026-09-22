@@ -1499,3 +1499,318 @@ tbody tr:hover {
 
     cursor: not-allowed;
 }
+
+/* =========================================================
+   CIVICTRACK - IMPRESSIVE ASSIGNMENT SECTION
+   ========================================================= */
+
+.assignment-card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #D7E0E4;
+}
+
+/* Top accent line */
+
+.assignment-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 4px;
+
+    background: var(--teal);
+}
+
+
+/* HEADER */
+
+.assignment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.assignment-subtitle {
+    margin-top: 6px;
+
+    color: var(--text-light);
+
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.assignment-header-icon {
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 12px;
+
+    background: #E8F5F4;
+
+    font-size: 21px;
+}
+
+
+/* CURRENT ASSIGNMENT */
+
+.assignment-current {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 16px;
+
+    margin: 22px 0;
+}
+
+.assignment-status-box {
+    padding: 17px 18px;
+
+    background: #F7F9F8;
+
+    border: 1px solid #E2E8EA;
+
+    border-radius: 10px;
+
+    transition: 0.2s ease;
+}
+
+.assignment-status-box:hover {
+    border-color: #BFD7D7;
+
+    transform: translateY(-1px);
+}
+
+.assignment-label {
+    display: block;
+
+    margin-bottom: 9px;
+
+    color: #8A969E;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+}
+
+.assignment-value {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: var(--navy);
+
+    font-size: 14px;
+}
+
+.assignment-dot {
+    width: 9px;
+    height: 9px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: var(--warning);
+
+    box-shadow:
+        0 0 0 4px rgba(217, 145, 0, 0.10);
+}
+
+
+/* ASSIGNMENT FORM */
+
+.assignment-form {
+    margin-top: 5px;
+
+    padding: 22px;
+
+    background: #FCFDFD;
+
+    border: 1px solid #E2E8EA;
+
+    border-radius: 12px;
+}
+
+.assignment-form > h4 {
+    margin-bottom: 18px;
+
+    color: var(--navy);
+
+    font-size: 16px;
+}
+
+
+/* INPUTS */
+
+.assignment-form label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: var(--navy);
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+.assignment-form input {
+    width: 100%;
+
+    padding: 13px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 8px;
+
+    background: var(--white);
+
+    color: var(--text-dark);
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: 0.2s ease;
+}
+
+.assignment-form input::placeholder {
+    color: #8A969E;
+}
+
+.assignment-form input:focus {
+    border-color: var(--teal);
+
+    box-shadow:
+        0 0 0 3px rgba(15, 139, 141, 0.12);
+}
+
+
+/* SPACE BETWEEN DEPARTMENT / OFFICER */
+
+.assignment-form label + input {
+    margin-bottom: 18px;
+}
+
+
+/* BUTTON */
+
+#assignComplaintButton {
+    margin-top: 4px;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: var(--teal);
+
+    color: var(--white);
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+
+    box-shadow:
+        0 4px 10px rgba(15, 139, 141, 0.18);
+}
+
+#assignComplaintButton:hover {
+    background: var(--teal-dark);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 14px rgba(15, 139, 141, 0.22);
+}
+
+#assignComplaintButton:active {
+    transform: translateY(0);
+}
+
+#assignComplaintButton:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+
+/* SUCCESS / ERROR MESSAGE */
+
+#assignmentMessage {
+    min-height: 20px;
+
+    margin-top: 12px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* MOBILE */
+
+@media (max-width: 700px) {
+
+    .assignment-current {
+        grid-template-columns: 1fr;
+    }
+
+    .assignment-form {
+        padding: 18px;
+    }
+
+    #assignComplaintButton {
+        width: 100%;
+    }
+
+}
+
+.assignment-form label {
+    margin-top: 24px;
+}
+
+.assignment-form label:first-of-type {
+    margin-top: 0;
+}
+
+.assignment-form input {
+    margin-bottom: 4px;
+}
+
+#assignComplaintButton {
+    margin-top: 24px;
+}
+
+.assignment-form > h4 {
+    margin-top: 8px;
+    margin-bottom: 10px;
+}
+
+.assignment-form > p {
+    margin-bottom: 24px;
+    color: var(--text-light);
+    font-size: 13px;
+    line-height: 1.5;
+}
