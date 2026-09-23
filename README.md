@@ -139,49 +139,6 @@ Clone the repository and install the backend dependencies:
 ```bash
 cd src/backend
 npm install
-```
-
-Configure the required environment variables in `.env`.
-
-Do not commit `.env` or any database passwords, JWT secrets, or other credentials to GitHub.
-
-Start the backend:
-
-```bash
-node server.js
-```
-
-The backend runs on:
-
-```text
-http://localhost:5000
-```
-
-### API Base URL
-
-```text
-http://localhost:5000/api
-```
-
-### Database
-
-CivicTrack uses PostgreSQL.
-
-The database schema is available at:
-
-```text
-src/database/schema.sql
-```
-
-### Offline Testing
-
-The frontend can queue supported actions when the network is unavailable and synchronize them after the connection is restored.
-
-For detailed setup, environment variables, and testing instructions:
-
-**[View Setup Documentation](docs/setup.md)**
-
----
 
 ## 8. Known Limitations & Roadmap
 
@@ -228,3 +185,9 @@ GitHub repository:
 https://github.com/nagrajg9742-dotcom/HM26-D68D.git
 
 ## Security
+CivicTrack keeps sensitive configuration outside the repository using environment variables.
+
+- Database credentials are stored in `.env`.
+- JWT secrets are stored in `.env`.
+- `.env` is excluded through `.gitignore`.
+- Secrets and database passwords must not be committed to GitHub.
