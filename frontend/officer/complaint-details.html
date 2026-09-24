@@ -157,7 +157,7 @@
                         Reported Date & Time
                     </span>
 
-                    <strong id="complaintDate">
+                    <strong id="complaintCreatedAt">
                         Loading...
                     </strong>
 
@@ -485,58 +485,99 @@
              ASSIGNMENT
              ================================================= -->
 
-        <section class="details-card">
+        <!-- =================================================
+     ASSIGNMENT
+     ================================================= -->
 
-            <div class="details-card-header">
+<section class="details-card assignment-card">
 
-                <h3>
-                    Assignment
-                </h3>
+    <div class="details-card-header assignment-header">
 
+        <div>
+            <h3>Assign Complaint</h3>
+
+            <p class="assignment-subtitle">
+                Assign this complaint to the appropriate department
+                and officer for resolution.
+            </p>
+        </div>
+
+        <div class="assignment-header-icon">
+            👤
+        </div>
+
+    </div>
+
+
+    <!-- CURRENT ASSIGNMENT -->
+
+    <div class="assignment-current">
+
+        <div class="assignment-status-box">
+
+            <span class="assignment-label">
+                CURRENT DEPARTMENT
+            </span>
+
+            <div class="assignment-value">
+                <span class="assignment-dot"></span>
+
+                <strong id="assignedDepartment">
+                    Not assigned
+                </strong>
             </div>
 
-
-            <div class="details-grid">
-
-                <div class="detail-item">
-
-                    <span>
-                        Current Department
-                    </span>
-
-                    <strong id="assignedDepartment">
-                        Loading...
-                    </strong>
-
-                </div>
+        </div>
 
 
-                <div class="detail-item">
+        <div class="assignment-status-box">
 
-                    <span>
-                        Current Officer
-                    </span>
+            <span class="assignment-label">
+                CURRENT OFFICER
+            </span>
 
-                    <strong id="assignedOfficer">
-                        Loading...
-                    </strong>
+            <div class="assignment-value">
+                <span class="assignment-dot"></span>
 
-                </div>
-
+                <strong id="assignedOfficer">
+                    Unassigned
+                </strong>
             </div>
 
+        </div>
 
-            <div class="assignment-form">
+    </div>
 
-                <h4>
-                    Assign Complaint
-                </h4>
 
+    <!-- ASSIGNMENT FORM -->
+
+    <div class="assignment-form">
+
+        <div class="assignment-form-title">
+
+            <span class="form-title-icon">⚙</span>
+
+            <div>
+                <h4>New Assignment</h4>
+
+                <p>
+                    Enter the department and officer responsible
+                    for this complaint.
+                </p>
+            </div>
+
+        </div>
+
+
+        <div class="assignment-fields">
+
+            <!-- DEPARTMENT -->
+
+            <div class="assignment-field">
 
                 <label for="departmentInput">
-                    Department
+                    🏢 Department
                 </label>
-
 
                 <input
                     type="text"
@@ -545,11 +586,20 @@
                     autocomplete="organization"
                 >
 
+                <small>
+                    Example: Sanitation, Roads, Water Supply
+                </small>
+
+            </div>
+
+
+            <!-- OFFICER -->
+
+            <div class="assignment-field">
 
                 <label for="officerInput">
-                    Officer
+                    👨‍💼 Officer
                 </label>
-
 
                 <input
                     type="text"
@@ -558,21 +608,39 @@
                     autocomplete="off"
                 >
 
-
-                <button
-                    type="button"
-                    id="assignComplaintButton"
-                >
-                    Assign Complaint
-                </button>
-
-
-                <p id="assignmentMessage"></p>
+                <small>
+                    Enter the responsible officer name or ID
+                </small>
 
             </div>
 
-        </section>
+        </div>
 
+
+        <!-- ACTION -->
+
+        <div class="assignment-action">
+
+            <button
+                type="button"
+                id="assignComplaintButton"
+                class="assign-complaint-btn"
+            >
+                <span>✓</span>
+                Assign Complaint
+            </button>
+
+        </div>
+
+
+        <p
+            id="assignmentMessage"
+            class="assignment-message"
+        ></p>
+
+    </div>
+
+</section>
 
         <!-- =================================================
              OFFICER ACTION / RESOLUTION
